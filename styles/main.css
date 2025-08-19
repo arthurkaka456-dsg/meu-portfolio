@@ -90,8 +90,7 @@ nav a:hover{ opacity:1; }
 
 /* =======================================
    5) Projetos em destaque — base
-   OBS: Cada card usa --img como background. O modificador .projects--equal-4
-        (abaixo) força 4 cards iguais e sobrepõe o que for preciso.
+   OBS: Cada card usa --img como background.
    ======================================= */
 .projects{ display:grid; gap:16px; grid-template-columns:repeat(12,1fr); }
 .card{
@@ -101,14 +100,12 @@ nav a:hover{ opacity:1; }
   transition: transform .4s ease, box-shadow .4s ease;
 }
 .card:hover{ transform:translateY(-3px); box-shadow:0 20px 40px rgba(0,0,0,.35); }
-
 .card-media{
   position:absolute; inset:0; background-image:var(--img); background-size:cover; background-position:center;
   filter:grayscale(100%) contrast(115%); opacity:.8; transform:scale(1);
   transition: opacity .4s, transform .6s, filter .4s;
 }
 .card:hover .card-media{ opacity:1; filter:none; transform:scale(1.05); }
-
 .card-badge{
   position:absolute; top:12px; left:12px; padding:8px 10px; border-radius:999px;
   background:rgba(0,0,0,.5); backdrop-filter:blur(3px); font-size:12px; border:1px solid #2a2a2a;
@@ -127,84 +124,34 @@ nav a:hover{ opacity:1; }
 .card .card-link:focus{ outline:2px solid var(--accent); outline-offset:4px; }
 
 /* =======================================
-   5.1) Projetos — grid fixo de 4 cards iguais
-   OBS: Ative usando .projects--equal-4 no HTML.
-   OBS: Deixe as regras base acima; este bloco apenas sobrepõe.
-   ======================================= */
-/* =======================================
-   Projetos — grid 2x2 fixo no desktop
-   OBS: substitua o bloco antigo de .projects--equal-4 por este
+   5.1) Projetos — grid 2x2 (desktop)
+   OBS: Use .projects--equal-4 no container e ajuste a altura com --tile-ratio
    ======================================= */
 .projects--equal-4{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);  /* OBS: 2 colunas no desktop */
-  gap: 20px;                               /* OBS: respiro um pouco maior entre os cards */
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);  /* 2 colunas no desktop */
+  gap:20px;
 }
-
-/* OBS: todos os cards com o mesmo tamanho via aspect-ratio.
-   A proporção vem do inline style (ex.: --tile-ratio: 4/3). */
 .projects--equal-4 .card{
-  grid-column: auto;    /* ignora .span-* antigas */
-  min-height: unset;    /* sem altura mínima fixa */
+  grid-column:auto;     /* ignora .span-* antigas */
+  min-height:unset;
   aspect-ratio: var(--tile-ratio, 4 / 3);
 }
-
-/* OBS: CTA centralizado abaixo dos cards (mantém como está) */
+/* CTA centralizado abaixo dos cards */
 .projects-cta{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 24px;
-  gap: 12px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  margin-top:24px;
+  gap:12px;
 }
-
-/* --------- quebras responsivas --------- */
-@media (max-width: 900px){
-  /* OBS: mantém 2 colunas no tablet */
-  .projects--equal-4{
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Responsivo dos projetos */
+@media (max-width:900px){
+  .projects--equal-4{ grid-template-columns: repeat(2, 1fr); }
 }
-
-@media (max-width: 640px){
-  /* OBS: empilha no mobile para leitura confortável */
-  .projects--equal-4{
-    grid-template-columns: 1fr;
-  }
-}
-
-}
-
-/* OBS: todos os cards com o mesmo tamanho via aspect-ratio.
-   Ajuste a proporção em --tile-ratio no HTML (ex.: 16/9, 4/3, 1/1). */
-.projects--equal-4 .card{
-  grid-column: auto;    /* ignora classes .span-* antigas */
-  min-height: unset;    /* remove alturas mínimas */
-  aspect-ratio: var(--tile-ratio, 16 / 10);
-}
-
-.projects-cta{
-  display: flex;            /* OBS: garante centralização em qualquer cenário */
-  justify-content: center;  /* OBS: centraliza horizontalmente */
-  align-items: center;      /* OBS: alinha verticalmente (se houver múltiplas linhas) */
-  width: 100%;              /* OBS: ocupa toda a largura da seção */
-  margin-top: 24px;         /* OBS: respiro acima do botão */
-  gap: 12px;                /* OBS: se futuramente tiver 2+ botões */
-}
-
-}
-
-/* --------- quebras responsivas --------- */
-@media (max-width: 1024px){
-  .projects--equal-4{
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 640px){
-  .projects--equal-4{
-    grid-template-columns: 1fr;
-  }
+@media (max-width:640px){
+  .projects--equal-4{ grid-template-columns: 1fr; }
 }
 
 /* =======================================
@@ -212,18 +159,13 @@ nav a:hover{ opacity:1; }
    ======================================= */
 #metodologia h2,
 #metodologia .centered{ text-align:center; }
-
 .steps{ display:grid; gap:14px; }
-
-/* Caixa base */
 .step{
   border:1px solid var(--line);
   border-radius:var(--radius);
   background:linear-gradient(180deg,#0f0f0f,#0b0b0b);
   overflow:hidden; /* segura a expansão */
 }
-
-/* Cabeçalho clicável (summary) */
 .step summary{
   list-style:none;
   display:grid;
@@ -235,21 +177,8 @@ nav a:hover{ opacity:1; }
   color:#d7d7d7; /* mais discreto */
 }
 .step summary::-webkit-details-marker{ display:none; }
-
-/* Número no mesmo tamanho do título */
-.step-num{
-  font-size:20px;
-  font-weight:800;
-  color:#cfe9cf; /* tom mais suave */
-}
-.step h3{
-  margin:0;
-  font-size:20px;
-  font-weight:700;
-  color:#e9e9e9;
-}
-
-/* Seta que gira ao abrir */
+.step-num{ font-size:20px; font-weight:800; color:#cfe9cf; }
+.step h3{ margin:0; font-size:20px; font-weight:700; color:#e9e9e9; }
 .chev{
   width:28px; height:28px;
   display:grid; place-items:center;
@@ -259,39 +188,26 @@ nav a:hover{ opacity:1; }
   transition: transform .2s ease, opacity .2s ease;
 }
 .step[open] .chev{ transform:rotate(180deg); opacity:1; }
-
-/* Conteúdo expansível */
-.step-content{
-  display:none;
-  padding:0 18px 18px 18px;
-  color:#cfcfcf;
-}
+.step-content{ display:none; padding:0 18px 18px 18px; color:#cfcfcf; }
 .step[open] .step-content{ display:block; }
 
 /* =======================================
    7) Sobre — foto proporcional e texto ao lado
    ======================================= */
 .about{
-  /* OBS: em telas médias/grandes, duas colunas:
-     - 1ª (foto) entre 160px e 280px, escalando ~24vw
-     - 2ª é o texto ocupando o resto */
   display:grid;
-  grid-template-columns: clamp(160px, 24vw, 280px) 1fr;
+  grid-template-columns: clamp(160px, 24vw, 280px) 1fr; /* foto | texto */
   gap:24px;
   align-items:center;
 }
 .avatar{
   border-radius:20px;
-  overflow:hidden;        /* OBS: respeita a borda arredondada */
+  overflow:hidden;
   border:1px solid var(--line);
-  aspect-ratio: 4 / 5;   /* OBS: proporção de retrato */
+  aspect-ratio: 4 / 5;
   max-height: min(52vh, 420px);
 }
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;       /* OBS: cobre com corte elegante */
-}
+.avatar img{ width:100%; height:100%; object-fit:cover; }
 .about p{ color:#d7d7d7; }
 
 /* =======================================
@@ -344,50 +260,9 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
   }
 }
 
-
 /* =======================================
-   FIX PROJETOS — 2 colunas x 2 linhas, cards maiores
-   OBS: estes seletores têm mais “força” e usam !important
-        para vencer qualquer regra anterior do .projects
-   ======================================= */
-.projects.projects--equal-4{
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important; /* 2 colunas no desktop */
-  gap: 20px !important;                              /* um respiro maior entre cards */
-  align-items: stretch !important;
-}
-
-.projects.projects--equal-4 .card{
-  grid-column: auto !important;  /* ignora .span-* antigas */
-  min-height: unset !important;
-  aspect-ratio: var(--tile-ratio, 4 / 3) !important; /* mais alto = card maior */
-}
-
-/* Mantém 2 colunas até ~900px e empilha no mobile */
-@media (max-width: 900px){
-  .projects.projects--equal-4{
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-@media (max-width: 640px){
-  .projects.projects--equal-4{
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* Centraliza o botão "Mais projetos" abaixo do grid */
-.projects-cta{
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  width: 100% !important;
-  margin-top: 24px !important;
-  gap: 12px !important;
-}
-
-/* =======================================
-   Cursor personalizado — bola branca + negativo em imagens
-   OBS: cole este bloco NO FINAL do arquivo para prevalecer.
+   12) Cursor personalizado — bola branca + negativo em imagens
+   OBS: mantenha este bloco NO FINAL do arquivo para prevalecer.
    ======================================= */
 @media (pointer: fine) {
   /* OBS: esconde o cursor do sistema no site todo,
@@ -397,14 +272,14 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
   body.custom-cursor textarea,
   body.custom-cursor [contenteditable="true"] { cursor: text; }
 
-  /* OBS: a bolinha que segue o mouse */
+  /* OBS: a bolinha que segue o mouse (elemento criado via JS: <div class="akd-cursor">) */
   .akd-cursor{
     position: fixed;
     left: 0; top: 0;
-    width: 38px; height: 38px;          /* OBS: ajuste o tamanho aqui */
+    width: 38px; height: 38px;          /* OBS: tamanho da bolinha */
     border: 2px solid #fff;             /* OBS: borda branca */
     border-radius: 999px;
-    background: rgba(255,255,255, .06); /* OBS: preenchimento bem sutil */
+    background: transparent;            /* OBS: sem preenchimento por padrão */
     pointer-events: none;
     z-index: 99999;
     transform: translate(-50%, -50%);   /* centraliza no ponteiro */
@@ -412,17 +287,17 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
       width .2s ease, height .2s ease,
       border-color .2s ease, opacity .25s ease,
       background-color .2s ease;
-    will-change: transform;
+    will-change: transform, backdrop-filter;
     opacity: .95;
-    /* OBS: por padrão, sem invert. Só ativa quando estiver sobre imagem */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    mix-blend-mode: normal;
   }
 
   /* OBS: oculta quando o ponteiro sai da janela */
   .akd-cursor.is-hidden { opacity: 0; }
 
-  /* OBS: quando passa por cima de elementos "clicáveis", dá uma crescida sutil */
+  /* OBS: quando passa por cima de elementos "clicáveis", cresce um pouco */
   body.custom-cursor .is-link { width: 48px; height: 48px; border-width: 2px; }
 
   /* OBS: quando estiver sobre imagem, aplica negativo SOMENTE dentro da bolinha */
@@ -430,6 +305,7 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
     backdrop-filter: invert(1) contrast(110%);
     -webkit-backdrop-filter: invert(1) contrast(110%);
     background: rgba(255,255,255,.08); /* leve glow pra destacar */
+    mix-blend-mode: normal;
   }
 
   /* OBS: sobre campos de texto, esconda a bolinha pra ver o cursor I-beam */
