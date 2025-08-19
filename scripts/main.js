@@ -113,7 +113,7 @@
           opacity: 0;                /* aparece no primeiro mousemove */
         }
 
-        /* Rótulo "VER" (fica oculto no estado base) */
+        /* Rótulo "Ver" (fica oculto no estado base) */
         .akd-cursor .label{
           font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
           font-weight: 400;
