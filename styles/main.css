@@ -343,3 +343,44 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
     max-height:380px;
   }
 }
+
+
+/* =======================================
+   FIX PROJETOS — 2 colunas x 2 linhas, cards maiores
+   OBS: estes seletores têm mais “força” e usam !important
+        para vencer qualquer regra anterior do .projects
+   ======================================= */
+.projects.projects--equal-4{
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important; /* 2 colunas no desktop */
+  gap: 20px !important;                              /* um respiro maior entre cards */
+  align-items: stretch !important;
+}
+
+.projects.projects--equal-4 .card{
+  grid-column: auto !important;  /* ignora .span-* antigas */
+  min-height: unset !important;
+  aspect-ratio: var(--tile-ratio, 4 / 3) !important; /* mais alto = card maior */
+}
+
+/* Mantém 2 colunas até ~900px e empilha no mobile */
+@media (max-width: 900px){
+  .projects.projects--equal-4{
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 640px){
+  .projects.projects--equal-4{
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Centraliza o botão "Mais projetos" abaixo do grid */
+.projects-cta{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-top: 24px !important;
+  gap: 12px !important;
+}
