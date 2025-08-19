@@ -384,3 +384,54 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
   margin-top: 24px !important;
   gap: 12px !important;
 }
+
+/* =======================================
+   Cursor personalizado — bola branca + negativo em imagens
+   OBS: cole este bloco NO FINAL do arquivo para prevalecer.
+   ======================================= */
+@media (pointer: fine) {
+  /* OBS: esconde o cursor do sistema no site todo,
+     mas mantém cursor de texto em inputs/textarea */
+  body.custom-cursor { cursor: none; }
+  body.custom-cursor input,
+  body.custom-cursor textarea,
+  body.custom-cursor [contenteditable="true"] { cursor: text; }
+
+  /* OBS: a bolinha que segue o mouse */
+  .akd-cursor{
+    position: fixed;
+    left: 0; top: 0;
+    width: 38px; height: 38px;          /* OBS: ajuste o tamanho aqui */
+    border: 2px solid #fff;             /* OBS: borda branca */
+    border-radius: 999px;
+    background: rgba(255,255,255, .06); /* OBS: preenchimento bem sutil */
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);   /* centraliza no ponteiro */
+    transition:
+      width .2s ease, height .2s ease,
+      border-color .2s ease, opacity .25s ease,
+      background-color .2s ease;
+    will-change: transform;
+    opacity: .95;
+    /* OBS: por padrão, sem invert. Só ativa quando estiver sobre imagem */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* OBS: oculta quando o ponteiro sai da janela */
+  .akd-cursor.is-hidden { opacity: 0; }
+
+  /* OBS: quando passa por cima de elementos "clicáveis", dá uma crescida sutil */
+  body.custom-cursor .is-link { width: 48px; height: 48px; border-width: 2px; }
+
+  /* OBS: quando estiver sobre imagem, aplica negativo SOMENTE dentro da bolinha */
+  body.custom-cursor.over-img .akd-cursor{
+    backdrop-filter: invert(1) contrast(110%);
+    -webkit-backdrop-filter: invert(1) contrast(110%);
+    background: rgba(255,255,255,.08); /* leve glow pra destacar */
+  }
+
+  /* OBS: sobre campos de texto, esconda a bolinha pra ver o cursor I-beam */
+  body.custom-cursor.over-text .akd-cursor{ opacity: 0; }
+}
