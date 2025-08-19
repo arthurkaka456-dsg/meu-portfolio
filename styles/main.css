@@ -196,9 +196,66 @@ nav a:hover{ opacity:1; }
 /* =======================================
    7) Sobre
    ======================================= */
-.about{ display:grid; grid-template-columns:300px 1fr; gap:24px; align-items:center; }
-.avatar{ border-radius:20px; overflow:hidden; border:1px solid var(--line); }
+/* =======================================
+   7) Sobre — foto proporcional e texto ao lado
+   OBS: substitua o bloco antigo (.about / .avatar) por este
+   ======================================= */
+.about{
+  /* OBS: em telas médias/grandes, mantém duas colunas:
+     - a 1ª (foto) fica entre 160px e 280px, escalando ~24vw
+     - a 2ª é o texto ocupando o resto */
+  display: grid;
+  grid-template-columns: clamp(160px, 24vw, 280px) 1fr;
+  gap: 24px;
+  align-items: center; /* OBS: centraliza verticalmente a foto e o texto */
+}
+
+/* OBS: a moldura da foto continua igual, mas agora controlamos proporção e corte */
+.avatar{
+  border-radius: 20px;
+  overflow: hidden;        /* OBS: garante que o corte respeite a borda arredondada */
+  border: 1px solid var(--line);
+
+  /* OBS: mantém proporção agradável de retrato (4:5) e
+     impede que a foto fique exagerada de alta. Ajuste se quiser. */
+  aspect-ratio: 4 / 5;
+  max-height: min(52vh, 420px);
+}
+
+/* OBS: a imagem preenche a moldura com corte elegante */
+.avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* OBS: cobre a área mantendo foco visual */
+}
+
+/* OBS: cor do texto já era discreta; mantemos */
 .about p{ color:#d7d7d7; }
+
+/* --------- Quebras responsivas --------- */
+
+/* OBS: em telas menores (até 900px), mantemos duas colunas,
+   só que a foto pode crescer um pouco (36vw, até 240px) */
+@media (max-width: 900px){
+  .about{
+    grid-template-columns: clamp(140px, 36vw, 240px) 1fr;
+    gap: 20px;
+  }
+}
+
+/* OBS: em telas muito pequenas (até 640px), empilhamos (foto em cima),
+   mas limitamos a largura da foto e centralizamos para não ficar gigante */
+@media (max-width: 640px){
+  .about{
+    grid-template-columns: 1fr;  /* empilha */
+  }
+  .avatar{
+    max-width: 320px;
+    margin: 0 auto 14px;         /* centraliza a foto e dá um respiro abaixo */
+    max-height: 380px;           /* reduz um pouco a altura máxima no mobile */
+  }
+}
+
 
 /* =======================================
    8) Entregáveis
