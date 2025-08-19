@@ -131,11 +131,49 @@ nav a:hover{ opacity:1; }
    OBS: Ative usando .projects--equal-4 no HTML.
    OBS: Deixe as regras base acima; este bloco apenas sobrepõe.
    ======================================= */
+/* =======================================
+   Projetos — grid 2x2 fixo no desktop
+   OBS: substitua o bloco antigo de .projects--equal-4 por este
+   ======================================= */
 .projects--equal-4{
-  /* OBS: 4 colunas no desktop, 2 no tablet, 1 no mobile */
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap:16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* OBS: 2 colunas no desktop */
+  gap: 20px;                               /* OBS: respiro um pouco maior entre os cards */
+}
+
+/* OBS: todos os cards com o mesmo tamanho via aspect-ratio.
+   A proporção vem do inline style (ex.: --tile-ratio: 4/3). */
+.projects--equal-4 .card{
+  grid-column: auto;    /* ignora .span-* antigas */
+  min-height: unset;    /* sem altura mínima fixa */
+  aspect-ratio: var(--tile-ratio, 4 / 3);
+}
+
+/* OBS: CTA centralizado abaixo dos cards (mantém como está) */
+.projects-cta{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+/* --------- quebras responsivas --------- */
+@media (max-width: 900px){
+  /* OBS: mantém 2 colunas no tablet */
+  .projects--equal-4{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px){
+  /* OBS: empilha no mobile para leitura confortável */
+  .projects--equal-4{
+    grid-template-columns: 1fr;
+  }
+}
+
 }
 
 /* OBS: todos os cards com o mesmo tamanho via aspect-ratio.
