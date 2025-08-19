@@ -68,89 +68,75 @@
        OBS: Removido botão “Ver case”. Card inteiro é link clicável (.card-link)
        OBS: Troque as URLs das imagens e os href dos cases
        ========================================= -->
-  <section class="section container" id="portfolio">
-    <h2>Projetos em destaque</h2>
+  <!-- =========================================
+     PROJETOS EM DESTAQUE (4 itens iguais)
+     OBS: Cards com mesmo tamanho (aspect-ratio) e grid fixo de 4 colunas.
+     OBS: Ajuste os href/URLs e os títulos conforme seus cases.
+     ========================================= -->
+<section class="section container" id="portfolio">
+  <h2>Projetos em destaque</h2>
 
-    <div class="projects">
-      <!-- Card 1 -->
-      <article class="card span-8 reveal" style="--img:url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1400&auto=format&fit=crop');">
-        <div class="card-media" aria-hidden="true"></div>
-        <div class="card-badge">Branding</div>
-        <div class="card-footer">
-          <div>
-            <div class="card-title">Arkana</div>
-            <div class="card-meta">Consultoria tech • 2025</div>
-          </div>
+  <!-- OBS: use .projects--equal-4 para ativar o grid de 4 colunas -->
+  <div class="projects projects--equal-4">
+    <!-- Card 1 -->
+    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1400&auto=format&fit=crop');">
+      <div class="card-media" aria-hidden="true"></div>
+      <div class="card-badge">Branding</div>
+      <div class="card-footer">
+        <div>
+          <div class="card-title">Arkana</div>
+          <div class="card-meta">Consultoria tech • 2025</div>
         </div>
-        <a class="card-link" href="cases/arkana.html" aria-label="Abrir case Arkana"></a>
-      </article>
+      </div>
+      <a class="card-link" href="cases/arkana.html" aria-label="Abrir case Arkana"></a>
+    </article>
 
-      <!-- Card 2 -->
-      <article class="card span-4 reveal" style="--img:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop');">
-        <div class="card-media" aria-hidden="true"></div>
-        <div class="card-badge">Identidade</div>
-        <div class="card-footer">
-          <div>
-            <div class="card-title">BW Soluções</div>
-            <div class="card-meta">Facilities • 2024</div>
-          </div>
+    <!-- Card 2 -->
+    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1400&auto=format&fit=crop');">
+      <div class="card-media" aria-hidden="true"></div>
+      <div class="card-badge">Identidade</div>
+      <div class="card-footer">
+        <div>
+          <div class="card-title">BW Soluções</div>
+          <div class="card-meta">Facilities • 2024</div>
         </div>
-        <a class="card-link" href="cases/bw-solucoes.html" aria-label="Abrir case BW Soluções"></a>
-      </article>
+      </div>
+      <a class="card-link" href="cases/bw-solucoes.html" aria-label="Abrir case BW Soluções"></a>
+    </article>
 
-      <!-- Card 3 -->
-      <article class="card span-6 reveal" style="--img:url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1400&auto=format&fit=crop');">
-        <div class="card-media" aria-hidden="true"></div>
-        <div class="card-badge">Produto digital</div>
-        <div class="card-footer">
-          <div>
-            <div class="card-title">SMHub</div>
-            <div class="card-meta">Cursos ITSM • 2024</div>
-          </div>
+    <!-- Card 3 -->
+    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1400&auto=format&fit=crop');">
+      <div class="card-media" aria-hidden="true"></div>
+      <div class="card-badge">Produto digital</div>
+      <div class="card-footer">
+        <div>
+          <div class="card-title">SMHub</div>
+          <div class="card-meta">Cursos ITSM • 2024</div>
         </div>
-        <a class="card-link" href="cases/smhub.html" aria-label="Abrir case SMHub"></a>
-      </article>
+      </div>
+      <a class="card-link" href="cases/smhub.html" aria-label="Abrir case SMHub"></a>
+    </article>
 
-      <!-- Card 4 -->
-      <article class="card span-6 reveal" style="--img:url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1400&auto=format&fit=crop');">
-        <div class="card-media" aria-hidden="true"></div>
-        <div class="card-badge">Rebranding</div>
-        <div class="card-footer">
-          <div>
-            <div class="card-title">BSM</div>
-            <div class="card-meta">Saúde • 2025</div>
-          </div>
+    <!-- Card 4 -->
+    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1400&auto=format&fit=crop');">
+      <div class="card-media" aria-hidden="true"></div>
+      <div class="card-badge">Rebranding</div>
+      <div class="card-footer">
+        <div>
+          <div class="card-title">BSM</div>
+          <div class="card-meta">Saúde • 2025</div>
         </div>
-        <a class="card-link" href="cases/bsm.html" aria-label="Abrir case BSM"></a>
-      </article>
+      </div>
+      <a class="card-link" href="cases/bsm.html" aria-label="Abrir case BSM"></a>
+    </article>
+  </div>
 
-      <!-- Card 5 -->
-      <article class="card span-4 reveal" style="--img:url('https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop');">
-        <div class="card-media" aria-hidden="true"></div>
-        <div class="card-badge">Naming</div>
-        <div class="card-footer">
-          <div>
-            <div class="card-title">Luke</div>
-            <div class="card-meta">Varejo moda • 2024</div>
-          </div>
-        </div>
-        <a class="card-link" href="cases/luke.html" aria-label="Abrir case Luke"></a>
-      </article>
-
-      <!-- Card 6 -->
-      <article class="card span-8 reveal" style="--img:url('https://images.unsplash.com/photo-1529336953121-ad585d6c6975?q=80&w=1400&auto=format&fit=crop');">
-        <div class="card-media" aria-hidden="true"></div>
-        <div class="card-badge">Sistema visual</div>
-        <div class="card-footer">
-          <div>
-            <div class="card-title">Geração Sal e Luz</div>
-            <div class="card-meta">Ministério Jovem • 2025</div>
-          </div>
-        </div>
-        <a class="card-link" href="cases/geracao-sal-e-luz.html" aria-label="Abrir case Geração Sal e Luz"></a>
-      </article>
-    </div>
-  </section>
+  <!-- OBS: Botão para ver todos os projetos -->
+  <div class="projects-cta">
+    <a class="btn primary" href="projects.html">Mais projetos</a>
+    <!-- OBS: Troque o href por /projects, /portfolio ou outra rota/página sua -->
+  </div>
+</section>
 
   <!-- =========================================
        METODOLOGIA
