@@ -116,7 +116,7 @@
         /* Rótulo "VER" (fica oculto no estado base) */
         .akd-cursor .label{
           font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-          font-weight: 800;
+          font-weight: 400;
           letter-spacing: .06em;
           user-select: none;
           opacity: 0;
