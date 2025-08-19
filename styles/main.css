@@ -315,6 +315,13 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
 /* =======================================
    Cursor custom — ocultar ponteiro do sistema em tudo
    ======================================= */
+/* Cursor: "VER" menos bold */
+@media (pointer: fine){
+  .akd-cursor .label{
+    font-weight: 600 !important;  /* antes era 800 */
+    letter-spacing: .04em;        /* um pouco menos espaçado pra combinar */
+  }
+}
 @media (pointer: fine) {
   /* Oculta o ponteiro do sistema no site todo */
   body.custom-cursor { cursor: none; }
@@ -332,10 +339,4 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
   body.custom-cursor [contenteditable="true"] { cursor: text; }
 }
 
-/* Cursor: "VER" menos bold */
-@media (pointer: fine){
-  .akd-cursor .label{
-    font-weight: 600 !important;  /* antes era 800 */
-    letter-spacing: .04em;        /* um pouco menos espaçado pra combinar */
-  }
-}
+
