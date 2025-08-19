@@ -194,9 +194,6 @@ nav a:hover{ opacity:1; }
 .step[open] .step-content{ display:block; }
 
 /* =======================================
-   7) Sobre
-   ======================================= */
-/* =======================================
    7) Sobre — foto proporcional e texto ao lado
    OBS: substitua o bloco antigo (.about / .avatar) por este
    ======================================= */
@@ -205,7 +202,7 @@ nav a:hover{ opacity:1; }
      - a 1ª (foto) fica entre 160px e 280px, escalando ~24vw
      - a 2ª é o texto ocupando o resto */
   display: grid;
-  grid-template-columns: clamp(160px, 24vw, 280px) 1fr;
+  grid-template-columns: clamp(150px, 20vw, 260px) 1fr;
   gap: 24px;
   align-items: center; /* OBS: centraliza verticalmente a foto e o texto */
 }
