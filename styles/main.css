@@ -146,10 +146,19 @@ nav a:hover{ opacity:1; }
   aspect-ratio: var(--tile-ratio, 16 / 10);
 }
 
-/* OBS: centraliza o botão "Mais projetos" e dá respiro */
+/* =======================================
+   Projetos — CTA centralizado
+   OBS: substitua a regra antiga de .projects-cta por esta
+   ======================================= */
 .projects-cta{
-  text-align:center;
-  margin-top:24px;
+  display: flex;            /* OBS: garante centralização em qualquer cenário */
+  justify-content: center;  /* OBS: centraliza horizontalmente */
+  align-items: center;      /* OBS: alinha verticalmente (se houver múltiplas linhas) */
+  width: 100%;              /* OBS: ocupa toda a largura da seção */
+  margin-top: 24px;         /* OBS: respiro acima do botão */
+  gap: 12px;                /* OBS: se futuramente tiver 2+ botões */
+}
+
 }
 
 /* --------- quebras responsivas --------- */
