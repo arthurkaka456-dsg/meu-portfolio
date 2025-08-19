@@ -1,11 +1,11 @@
 /* ============================================================
-   Studio AKD - Main JS (corrigido)
+   Studio AKD - Main JS (v cursor VER)
    Inclui:
    - Ano dinâmico
    - Smooth scroll para âncoras
    - Reveal on scroll (IntersectionObserver)
-   - Cursor personalizado: bolinha branca QUE SUBSTITUI o ponteiro
-     e aplica "negativo" apenas sobre imagens/cards
+   - Cursor personalizado: bolinha pequena que SUBSTITUI o ponteiro;
+     ao passar em elementos clicáveis, cresce e mostra "VER" dentro.
    ============================================================ */
 
 /* --------------------------------------------
@@ -67,23 +67,19 @@
   })();
 
   /* =========================================
-     4) Cursor personalizado — bolinha que SUBSTITUI o ponteiro
-        e aplica negativo apenas sobre imagens/cards
+     4) Cursor personalizado — bolinha menor que SUBSTITUI o ponteiro
+        Em elementos clicáveis: cresce e exibe "VER"
      ========================================= */
   (function(){
     var supportsFinePointer = window.matchMedia('(pointer: fine)').matches;
     if (!supportsFinePointer) return; // não ativa em touch
 
-    var supportsBackdrop = !!(window.CSS && (
-      CSS.supports('backdrop-filter', 'invert(1)') ||
-      CSS.supports('-webkit-backdrop-filter', 'invert(1)')
-    ));
-
-    // ---- CSS injetado: oculta o cursor do sistema quando ativo ----
+    // ---- CSS injetado: oculta o cursor do sistema e estiliza a bolinha/label ----
     var style = document.createElement('style');
     style.setAttribute('data-akd-cursor', 'true');
     style.textContent = `
       @media (pointer:fine){
+        /* OBS: esconde o cursor do sistema no site todo */
         body.custom-cursor { cursor: none; }
         /* Mesmo em elementos que normalmente usam pointer */
         body.custom-cursor a,
@@ -95,118 +91,126 @@
         body.custom-cursor input,
         body.custom-cursor textarea,
         body.custom-cursor [contenteditable="true"] { cursor: text; }
+
+        /* Cursor base (o círculo) */
+        .akd-cursor{
+          position: fixed;
+          left: 0; top: 0;
+          display: grid;
+          place-items: center;
+          border: 2px solid #fff;
+          border-radius: 999px;
+          background: transparent;
+          color: #000;               /* cor do texto quando preencher de branco */
+          pointer-events: none;
+          z-index: 99999;
+          transform: translate(-50%, -50%);
+          transition:
+            width .18s ease, height .18s ease,
+            background-color .18s ease, border-color .18s ease,
+            opacity .18s ease, transform .04s linear;
+          will-change: transform;
+          opacity: 0;                /* aparece no primeiro mousemove */
+        }
+
+        /* Rótulo "VER" (fica oculto no estado base) */
+        .akd-cursor .label{
+          font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+          font-weight: 800;
+          letter-spacing: .06em;
+          user-select: none;
+          opacity: 0;
+          transform: scale(.9);
+          transition: opacity .12s ease, transform .12s ease;
+          pointer-events: none;
+          color: #000;              /* texto preto dentro do círculo branco */
+        }
+
+        /* Estado interativo: cresce e mostra "VER" */
+        .akd-cursor.is-interactive{
+          background: #fff;          /* preenche para dar contraste ao texto */
+          border-color: #fff;
+        }
+        .akd-cursor.is-interactive .label{
+          opacity: 1;
+          transform: scale(1);
+        }
       }
     `;
     document.head.appendChild(style);
 
-    // ---- Cria a bolinha do cursor (se não existir) ----
+    // ---- Cria a bolinha do cursor ----
     document.body.classList.add('custom-cursor');
-    var cur = document.querySelector('.akd-cursor');
-    if (!cur) {
-      cur = document.createElement('div');
-      cur.className = 'akd-cursor is-hidden';
-      document.body.appendChild(cur);
-    }
 
-    // Estilos inline da bolinha (independente do CSS externo)
-    var BASE = 38;   // diâmetro normal (px)
-    var HOVER = 48;  // diâmetro sobre itens clicáveis (px)
-    Object.assign(cur.style, {
-      position: 'fixed',
-      left: '0px',
-      top: '0px',
-      width: BASE + 'px',
-      height: BASE + 'px',
-      border: '2px solid #fff',
-      borderRadius: '999px',
-      background: 'transparent',
-      pointerEvents: 'none',
-      zIndex: '99999',
-      transform: 'translate(-50%, -50%)',
-      transition: 'width .2s ease, height .2s ease, border-color .2s ease, opacity .25s ease, background-color .2s ease',
-      willChange: 'transform, backdrop-filter',
-      opacity: '0',
-      mixBlendMode: 'normal'
-    });
+    var cur = document.createElement('div');
+    cur.className = 'akd-cursor is-hidden';
 
-    // ---- Helpers ----
-    function hasBgImage(el){
-      if (!el || el.nodeType !== 1) return false;
-      var cs = getComputedStyle(el);
-      var bg = cs.getPropertyValue('background-image');
-      var varImg = cs.getPropertyValue('--img'); // sua var usada nos cards
-      return (bg && bg !== 'none' && bg.includes('url(')) || (varImg && varImg.includes('url('));
-    }
-    function isOverImage(target){
-      var el = target, steps = 0;
-      while (el && steps < 6){
-        if (el.matches && el.matches('img, picture, video')) return true;
-        if (hasBgImage(el)) return true; // cobre .card/.card-media
-        el = el.parentElement; steps++;
-      }
-      return false;
-    }
+    var label = document.createElement('span');
+    label.className = 'label';
+    label.textContent = 'VER'; // OBS: texto exibido no hover interativo
+
+    cur.appendChild(label);
+    document.body.appendChild(cur);
+
+    // Tamanhos (px)
+    var BASE = 18;   // bolinha menor (padrão)
+    var HOVER = 56;  // tamanho ao passar sobre algo clicável (para caber "VER")
+
+    // aplica tamanho base (inline para não depender do CSS)
+    setSize(cur, BASE);
+
+    // Helpers de detecção
     function isInteractive(target){
-      return !!(target.closest && target.closest('a, button, .btn, [role="button"]'));
+      // anchors, botões, roles de botão e elementos com handler direto
+      if (!target) return false;
+      return !!(target.closest &&
+        target.closest('a, button, .btn, .card-link, [role="button"], [data-interactive="true"]'));
     }
     function isTextual(target){
-      return !!(target.closest && target.closest('input, textarea, [contenteditable="true"]'));
+      return !!(target && target.closest &&
+        target.closest('input, textarea, [contenteditable="true"]'));
     }
 
-    // ---- Movimento INSTANTÂNEO (sem RAF/lerp) ----
+    // Movimento instantâneo (substitui o ponteiro)
     window.addEventListener('mousemove', function(e){
-      // posição da bolinha = posição do ponteiro
       cur.style.left = e.clientX + 'px';
       cur.style.top  = e.clientY + 'px';
-      cur.classList.remove('is-hidden');
+      cur.style.opacity = '0.95';
 
       var t = e.target;
 
-      // em campos de texto: esconda a bolinha para ver o I-beam nativo
+      // Em campos de texto: some para ver I-beam nativo
       if (isTextual(t)){
         cur.style.opacity = '0';
+        cur.classList.remove('is-interactive');
+        setSize(cur, BASE);
         return;
-      } else {
-        cur.style.opacity = '0.95';
       }
 
-      // tamanho ao passar em elementos clicáveis
+      // Interativo? Cresce e mostra "VER"
       if (isInteractive(t)){
-        cur.style.width = HOVER + 'px';
-        cur.style.height = HOVER + 'px';
-        cur.style.borderWidth = '2px';
+        cur.classList.add('is-interactive');
+        setSize(cur, HOVER);
+        // Ajusta fonte conforme tamanho
+        label.style.fontSize = '12px'; // base
+        if (HOVER >= 52) label.style.fontSize = '14px';
+        if (HOVER >= 60) label.style.fontSize = '16px';
       } else {
-        cur.style.width = BASE + 'px';
-        cur.style.height = BASE + 'px';
-        cur.style.borderWidth = '2px';
-      }
-
-      // negativo apenas sobre imagens/cards
-      if (isOverImage(t)){
-        if (supportsBackdrop){
-          cur.style.backdropFilter = 'invert(1) contrast(1.1)';
-          cur.style.webkitBackdropFilter = 'invert(1) contrast(1.1)';
-          cur.style.backgroundColor = 'rgba(255,255,255,.08)'; // leve glow
-          cur.style.mixBlendMode = 'normal';
-        } else {
-          // Fallback universal (funciona até sem backdrop-filter)
-          cur.style.backdropFilter = 'none';
-          cur.style.webkitBackdropFilter = 'none';
-          cur.style.backgroundColor = '#ffffff';
-          cur.style.mixBlendMode = 'difference';
-        }
-      } else {
-        cur.style.backdropFilter = 'none';
-        cur.style.webkitBackdropFilter = 'none';
-        cur.style.backgroundColor = 'transparent';
-        cur.style.mixBlendMode = 'normal';
+        cur.classList.remove('is-interactive');
+        setSize(cur, BASE);
       }
     });
 
     // Esconde quando sai da viewport
     window.addEventListener('mouseleave', function(){
-      cur.classList.add('is-hidden');
+      cur.style.opacity = '0';
     });
+
+    // Util: aplica largura/altura
+    function setSize(el, d){
+      el.style.width = d + 'px';
+      el.style.height = d + 'px';
+    }
   })();
 
 }); // fim initAKD
