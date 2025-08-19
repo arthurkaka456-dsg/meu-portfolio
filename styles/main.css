@@ -146,10 +146,6 @@ nav a:hover{ opacity:1; }
   aspect-ratio: var(--tile-ratio, 16 / 10);
 }
 
-/* =======================================
-   Projetos — CTA centralizado
-   OBS: substitua a regra antiga de .projects-cta por esta
-   ======================================= */
 .projects-cta{
   display: flex;            /* OBS: garante centralização em qualquer cenário */
   justify-content: center;  /* OBS: centraliza horizontalmente */
