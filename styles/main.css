@@ -89,9 +89,9 @@ nav a:hover{ opacity:1; }
 .section h2{ font-size:clamp(24px,3.6vw,40px); margin:0 0 20px 0; line-height:1.1; }
 
 /* =======================================
-   5) Projetos em destaque
-   OBS: Cada card usa --img como background
-   OBS: Card inteiro clicável via .card-link
+   5) Projetos em destaque — base
+   OBS: Cada card usa --img como background. O modificador .projects--equal-4
+        (abaixo) força 4 cards iguais e sobrepõe o que for preciso.
    ======================================= */
 .projects{ display:grid; gap:16px; grid-template-columns:repeat(12,1fr); }
 .card{
@@ -126,14 +126,46 @@ nav a:hover{ opacity:1; }
 .card .card-link{ position:absolute; inset:0; z-index:3; }
 .card .card-link:focus{ outline:2px solid var(--accent); outline-offset:4px; }
 
-/* Spans de grid (desktop) */
-.span-6{ grid-column:span 6; }
-.span-4{ grid-column:span 4; }
-.span-8{ grid-column:span 8; }
+/* =======================================
+   5.1) Projetos — grid fixo de 4 cards iguais
+   OBS: Ative usando .projects--equal-4 no HTML.
+   OBS: Deixe as regras base acima; este bloco apenas sobrepõe.
+   ======================================= */
+.projects--equal-4{
+  /* OBS: 4 colunas no desktop, 2 no tablet, 1 no mobile */
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:16px;
+}
+
+/* OBS: todos os cards com o mesmo tamanho via aspect-ratio.
+   Ajuste a proporção em --tile-ratio no HTML (ex.: 16/9, 4/3, 1/1). */
+.projects--equal-4 .card{
+  grid-column: auto;    /* ignora classes .span-* antigas */
+  min-height: unset;    /* remove alturas mínimas */
+  aspect-ratio: var(--tile-ratio, 16 / 10);
+}
+
+/* OBS: centraliza o botão "Mais projetos" e dá respiro */
+.projects-cta{
+  text-align:center;
+  margin-top:24px;
+}
+
+/* --------- quebras responsivas --------- */
+@media (max-width: 1024px){
+  .projects--equal-4{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px){
+  .projects--equal-4{
+    grid-template-columns: 1fr;
+  }
+}
 
 /* =======================================
-   6) Metodologia
-   OBS: Título centralizado, itens discretos, descrição expansível
+   6) Metodologia — centralizada e expansível
    ======================================= */
 #metodologia h2,
 #metodologia .centered{ text-align:center; }
@@ -148,7 +180,7 @@ nav a:hover{ opacity:1; }
   overflow:hidden; /* segura a expansão */
 }
 
-/* Cabeçalho clicável do item (summary) */
+/* Cabeçalho clicável (summary) */
 .step summary{
   list-style:none;
   display:grid;
@@ -195,64 +227,29 @@ nav a:hover{ opacity:1; }
 
 /* =======================================
    7) Sobre — foto proporcional e texto ao lado
-   OBS: substitua o bloco antigo (.about / .avatar) por este
    ======================================= */
 .about{
-  /* OBS: em telas médias/grandes, mantém duas colunas:
-     - a 1ª (foto) fica entre 160px e 280px, escalando ~24vw
-     - a 2ª é o texto ocupando o resto */
-  display: grid;
-  grid-template-columns: clamp(150px, 20vw, 260px) 1fr;
-  gap: 24px;
-  align-items: center; /* OBS: centraliza verticalmente a foto e o texto */
+  /* OBS: em telas médias/grandes, duas colunas:
+     - 1ª (foto) entre 160px e 280px, escalando ~24vw
+     - 2ª é o texto ocupando o resto */
+  display:grid;
+  grid-template-columns: clamp(160px, 24vw, 280px) 1fr;
+  gap:24px;
+  align-items:center;
 }
-
-/* OBS: a moldura da foto continua igual, mas agora controlamos proporção e corte */
 .avatar{
-  border-radius: 20px;
-  overflow: hidden;        /* OBS: garante que o corte respeite a borda arredondada */
-  border: 1px solid var(--line);
-
-  /* OBS: mantém proporção agradável de retrato (4:5) e
-     impede que a foto fique exagerada de alta. Ajuste se quiser. */
-  aspect-ratio: 4 / 5;
+  border-radius:20px;
+  overflow:hidden;        /* OBS: respeita a borda arredondada */
+  border:1px solid var(--line);
+  aspect-ratio: 4 / 5;   /* OBS: proporção de retrato */
   max-height: min(52vh, 420px);
 }
-
-/* OBS: a imagem preenche a moldura com corte elegante */
 .avatar img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;       /* OBS: cobre a área mantendo foco visual */
+  width:100%;
+  height:100%;
+  object-fit:cover;       /* OBS: cobre com corte elegante */
 }
-
-/* OBS: cor do texto já era discreta; mantemos */
 .about p{ color:#d7d7d7; }
-
-/* --------- Quebras responsivas --------- */
-
-/* OBS: em telas menores (até 900px), mantemos duas colunas,
-   só que a foto pode crescer um pouco (36vw, até 240px) */
-@media (max-width: 900px){
-  .about{
-    grid-template-columns: clamp(140px, 36vw, 240px) 1fr;
-    gap: 20px;
-  }
-}
-
-/* OBS: em telas muito pequenas (até 640px), empilhamos (foto em cima),
-   mas limitamos a largura da foto e centralizamos para não ficar gigante */
-@media (max-width: 640px){
-  .about{
-    grid-template-columns: 1fr;  /* empilha */
-  }
-  .avatar{
-    max-width: 320px;
-    margin: 0 auto 14px;         /* centraliza a foto e dá um respiro abaixo */
-    max-height: 380px;           /* reduz um pouco a altura máxima no mobile */
-  }
-}
-
 
 /* =======================================
    8) Entregáveis
@@ -293,6 +290,13 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
    11) Responsivo
    ======================================= */
 @media (max-width:900px){
-  .span-6, .span-4, .span-8{ grid-column:span 12; }
-  .about{ grid-template-columns:1fr; }
+  .about{ grid-template-columns: clamp(140px, 36vw, 240px) 1fr; gap:20px; }
+}
+@media (max-width:640px){
+  .about{ grid-template-columns: 1fr; }
+  .avatar{
+    max-width:320px;
+    margin:0 auto 14px;
+    max-height:380px;
+  }
 }
