@@ -1,10 +1,11 @@
 /* ============================================================
-   Studio AKD - Main JS
-   OBS: Este arquivo engloba:
+   Studio AKD - Main JS (corrigido)
+   Inclui:
    - Ano dinâmico
-   - Smooth scroll para anchors
+   - Smooth scroll para âncoras
    - Reveal on scroll (IntersectionObserver)
-   - Cursor personalizado (bolinha branca) com negativo sobre IMAGENS
+   - Cursor personalizado: bolinha branca QUE SUBSTITUI o ponteiro
+     e aplica "negativo" apenas sobre imagens/cards
    ============================================================ */
 
 /* --------------------------------------------
@@ -66,27 +67,31 @@
   })();
 
   /* =========================================
-     4) Cursor personalizado — bolinha branca
-        + negativo SOMENTE ao passar sobre imagens
+     4) Cursor personalizado — bolinha que SUBSTITUI o ponteiro
+        e aplica negativo apenas sobre imagens/cards
      ========================================= */
   (function(){
-    // OBS: Só ativa em dispositivos com ponteiro "fino" (mouse/trackpad)
     var supportsFinePointer = window.matchMedia('(pointer: fine)').matches;
-    if (!supportsFinePointer) return;
+    if (!supportsFinePointer) return; // não ativa em touch
 
-    // OBS: Verifica suporte a backdrop-filter (melhor efeito)
     var supportsBackdrop = !!(window.CSS && (
       CSS.supports('backdrop-filter', 'invert(1)') ||
       CSS.supports('-webkit-backdrop-filter', 'invert(1)')
     ));
 
-    // ---- Injeta CSS mínimo necessário via <style> ----
+    // ---- CSS injetado: oculta o cursor do sistema quando ativo ----
     var style = document.createElement('style');
     style.setAttribute('data-akd-cursor', 'true');
     style.textContent = `
       @media (pointer:fine){
-        /* OBS: esconde o cursor padrão, mas mantém I-beam em campos de texto */
         body.custom-cursor { cursor: none; }
+        /* Mesmo em elementos que normalmente usam pointer */
+        body.custom-cursor a,
+        body.custom-cursor button,
+        body.custom-cursor .btn,
+        body.custom-cursor .card,
+        body.custom-cursor [role="button"] { cursor: none; }
+        /* Mantém I-beam em campos de texto/editáveis */
         body.custom-cursor input,
         body.custom-cursor textarea,
         body.custom-cursor [contenteditable="true"] { cursor: text; }
@@ -94,12 +99,18 @@
     `;
     document.head.appendChild(style);
 
-    // ---- Cria a bolinha do cursor ----
-    var cur = document.createElement('div');
-    cur.setAttribute('aria-hidden', 'true');
-    // OBS: estilos inline para não depender do CSS externo
-    var BASE = 38;           // diâmetro base (px)
-    var HOVER = 48;          // diâmetro ao passar em link/botão
+    // ---- Cria a bolinha do cursor (se não existir) ----
+    document.body.classList.add('custom-cursor');
+    var cur = document.querySelector('.akd-cursor');
+    if (!cur) {
+      cur = document.createElement('div');
+      cur.className = 'akd-cursor is-hidden';
+      document.body.appendChild(cur);
+    }
+
+    // Estilos inline da bolinha (independente do CSS externo)
+    var BASE = 38;   // diâmetro normal (px)
+    var HOVER = 48;  // diâmetro sobre itens clicáveis (px)
     Object.assign(cur.style, {
       position: 'fixed',
       left: '0px',
@@ -108,52 +119,30 @@
       height: BASE + 'px',
       border: '2px solid #fff',
       borderRadius: '999px',
-      background: 'transparent',      // muda dinamicamente
+      background: 'transparent',
       pointerEvents: 'none',
       zIndex: '99999',
       transform: 'translate(-50%, -50%)',
       transition: 'width .2s ease, height .2s ease, border-color .2s ease, opacity .25s ease, background-color .2s ease',
-      willChange: 'transform, backdrop-filter'
+      willChange: 'transform, backdrop-filter',
+      opacity: '0',
+      mixBlendMode: 'normal'
     });
-    // Ajuste de blend por padrão
-    cur.style.mixBlendMode = 'normal';
-    cur.style.opacity = '0'; // começa escondido até o primeiro mousemove
-    document.body.appendChild(cur);
 
-    // ---- Ativa modo custom-cursor no body ----
-    document.body.classList.add('custom-cursor');
-
-    // ---- Lerp do cursor (seguindo o mouse suavemente) ----
-    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var x = window.innerWidth/2, y = window.innerHeight/2; // posição atual
-    var tx = x, ty = y;                                    // alvo
-    var speed = prefersReduced ? 1 : 0.18;                 // suavidade (1 = instantâneo)
-    function raf(){
-      x += (tx - x) * speed;
-      y += (ty - y) * speed;
-      cur.style.left = x + 'px';
-      cur.style.top  = y + 'px';
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    // ---- Helpers: detectar se está sobre "imagem" ----
+    // ---- Helpers ----
     function hasBgImage(el){
       if (!el || el.nodeType !== 1) return false;
-      var cs = window.getComputedStyle(el);
+      var cs = getComputedStyle(el);
       var bg = cs.getPropertyValue('background-image');
-      // também vale para variáveis do seu layout (--img)
-      var varImg = cs.getPropertyValue('--img');
-      return (bg && bg !== 'none' && bg.indexOf('url(') !== -1) || (varImg && varImg.indexOf('url(') !== -1);
+      var varImg = cs.getPropertyValue('--img'); // sua var usada nos cards
+      return (bg && bg !== 'none' && bg.includes('url(')) || (varImg && varImg.includes('url('));
     }
     function isOverImage(target){
-      var el = target;
-      var steps = 0;
-      while (el && steps < 6){ // sobe poucos níveis na árvore
+      var el = target, steps = 0;
+      while (el && steps < 6){
         if (el.matches && el.matches('img, picture, video')) return true;
-        if (hasBgImage(el)) return true;                // cobre .card, .card-media etc.
-        el = el.parentElement;
-        steps++;
+        if (hasBgImage(el)) return true; // cobre .card/.card-media
+        el = el.parentElement; steps++;
       }
       return false;
     }
@@ -164,15 +153,24 @@
       return !!(target.closest && target.closest('input, textarea, [contenteditable="true"]'));
     }
 
-    // ---- Mouse events ----
+    // ---- Movimento INSTANTÂNEO (sem RAF/lerp) ----
     window.addEventListener('mousemove', function(e){
-      tx = e.clientX; ty = e.clientY;
-      // exibe a bolinha assim que o mouse se mover
-      cur.style.opacity = '0.95';
+      // posição da bolinha = posição do ponteiro
+      cur.style.left = e.clientX + 'px';
+      cur.style.top  = e.clientY + 'px';
+      cur.classList.remove('is-hidden');
 
       var t = e.target;
 
-      // 1) Ajuste de tamanho se estiver sobre elemento interativo
+      // em campos de texto: esconda a bolinha para ver o I-beam nativo
+      if (isTextual(t)){
+        cur.style.opacity = '0';
+        return;
+      } else {
+        cur.style.opacity = '0.95';
+      }
+
+      // tamanho ao passar em elementos clicáveis
       if (isInteractive(t)){
         cur.style.width = HOVER + 'px';
         cur.style.height = HOVER + 'px';
@@ -183,42 +181,32 @@
         cur.style.borderWidth = '2px';
       }
 
-      // 2) Se estiver sobre campo de texto / editável, esconda a bolinha
-      if (isTextual(t)){
-        cur.style.opacity = '0';
-        return; // não aplica efeitos
-      }
-
-      // 3) Efeito "negativo" apenas quando estiver sobre imagem
-      var overImg = isOverImage(t);
-      if (overImg){
+      // negativo apenas sobre imagens/cards
+      if (isOverImage(t)){
         if (supportsBackdrop){
-          // Melhor caso: invert só dentro da bolinha usando backdrop-filter
           cur.style.backdropFilter = 'invert(1) contrast(1.1)';
           cur.style.webkitBackdropFilter = 'invert(1) contrast(1.1)';
-          cur.style.mixBlendMode = 'normal';
           cur.style.backgroundColor = 'rgba(255,255,255,.08)'; // leve glow
+          cur.style.mixBlendMode = 'normal';
         } else {
-          // Fallback universal: difference com fundo branco (também inverte)
+          // Fallback universal (funciona até sem backdrop-filter)
           cur.style.backdropFilter = 'none';
           cur.style.webkitBackdropFilter = 'none';
-          cur.style.mixBlendMode = 'difference';
           cur.style.backgroundColor = '#ffffff';
+          cur.style.mixBlendMode = 'difference';
         }
       } else {
-        // Fora de imagens: cursor limpo (sem negativo)
         cur.style.backdropFilter = 'none';
         cur.style.webkitBackdropFilter = 'none';
-        cur.style.mixBlendMode = 'normal';
         cur.style.backgroundColor = 'transparent';
+        cur.style.mixBlendMode = 'normal';
       }
     });
 
     // Esconde quando sai da viewport
     window.addEventListener('mouseleave', function(){
-      cur.style.opacity = '0';
+      cur.classList.add('is-hidden');
     });
-
-  })(); // fim cursor personalizado
+  })();
 
 }); // fim initAKD
