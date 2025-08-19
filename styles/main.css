@@ -311,3 +311,23 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
   /* OBS: sobre campos de texto, esconda a bolinha pra ver o cursor I-beam */
   body.custom-cursor.over-text .akd-cursor{ opacity: 0; }
 }
+
+/* =======================================
+   Cursor custom — ocultar ponteiro do sistema em tudo
+   ======================================= */
+@media (pointer: fine) {
+  /* Oculta o ponteiro do sistema no site todo */
+  body.custom-cursor { cursor: none; }
+
+  /* Mesmo em elementos que normalmente usam pointer */
+  body.custom-cursor a,
+  body.custom-cursor button,
+  body.custom-cursor .btn,
+  body.custom-cursor .card,
+  body.custom-cursor [role="button"] { cursor: none; }
+
+  /* Mantém I-beam onde precisa digitar */
+  body.custom-cursor input,
+  body.custom-cursor textarea,
+  body.custom-cursor [contenteditable="true"] { cursor: text; }
+}
