@@ -7,21 +7,20 @@
   <title>Studio AKD - Portfólio</title>
   <meta name="description" content="Site minimalista para estúdios de branding e design." />
 
-  <!-- OBS: Fonte. Troque/adicione famílias se quiser -->
+  <!-- OBS: Fonte -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- OBS: Favicon. Substitua assets/favicon.svg se quiser -->
+  <!-- OBS: Favicon (opcional) -->
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
-  <!-- OBS: CSS principal. Garanta que o caminho e o nome do arquivo conferem -->
+  <!-- OBS: CSS principal -->
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
   <!-- =========================================
        CABEÇALHO
-       OBS: Ajuste itens do menu e o nome do estúdio aqui
        ========================================= -->
   <header>
     <div class="container nav">
@@ -40,233 +39,184 @@
     </div>
   </header>
 
- <!-- =========================================
-     HERO — 80% da tela + forma entre as palavras
-     ========================================= -->
-<section class="hero" id="top">
-  <div class="container hero-wrap">
-    <h1 class="title hero-title">
-      Construímos marcas fortes<br class="br-md">
-      com design
-      <!-- OBS: forma decorativa (dois semicírculos se encontrando) -->
-      <span class="butterfly" aria-hidden="true">
-        <span class="wing left"></span>
-        <span class="wing right"></span>
-      </span>
-      e estratégia
-    </h1>
-
-    <!-- (opcional) subtítulo/CTA; pode remover se quiser só a frase -->
-    <!-- <p class="subtitle">Unimos pesquisa, direção criativa e execução.</p> -->
-    <!-- <div class="cta">
-      <a class="btn primary" href="#portfolio">Ver portfólio</a>
-      <a class="btn ghost" href="#contato">Falar comigo</a>
-    </div> -->
-  </div>
-</section>
-
-
   <!-- =========================================
-       PROJETOS EM DESTAQUE
-       OBS: Removido botão “Ver case”. Card inteiro é link clicável (.card-link)
-       OBS: Troque as URLs das imagens e os href dos cases
+       HERO — 80% da tela + “borboleta” entre palavras
        ========================================= -->
-  <!-- =========================================
-     PROJETOS EM DESTAQUE (4 itens iguais)
-     OBS: Cards com mesmo tamanho (aspect-ratio) e grid fixo de 4 colunas.
-     OBS: Ajuste os href/URLs e os títulos conforme seus cases.
-     ========================================= -->
-<section class="section container" id="portfolio">
-  <h2>Projetos em destaque</h2>
-
-  <!-- OBS: use .projects--equal-4 para ativar o grid de 4 colunas -->
-  <div class="projects projects--equal-4" style="--tile-ratio: 4/3;">
-    <!-- Card 1 -->
-   <article class="card reveal"
-  style="--img:url('CAPA-SOOURCING-SITE.png');">
-  <div class="card-media" aria-hidden="true"></div>
-  <div class="card-badge">Branding</div>
-  <div class="card-footer">
-    <div>
-      <div class="card-title">Arkana</div>
-      <div class="card-meta">Consultoria tech • 2025</div>
+  <section class="hero" id="top">
+    <div class="container hero-wrap">
+      <h1 class="title hero-title">
+        Construímos marcas fortes<br>
+        com design
+        <!-- OBS: forma decorativa (dois semicírculos se encontrando) -->
+        <span class="butterfly" aria-hidden="true">
+          <span class="wing left"></span>
+          <span class="wing right"></span>
+        </span>
+        e estratégia
+      </h1>
+      <!-- <p class="subtitle">Unimos pesquisa, direção criativa e execução.</p> -->
+      <!-- <div class="cta">
+        <a class="btn primary" href="#portfolio">Ver portfólio</a>
+        <a class="btn ghost" href="#contato">Falar comigo</a>
+      </div> -->
     </div>
-  </div>
-  <a class="card-link" href="cases/arkana.html" aria-label="Abrir case Arkana"></a>
-</article>
-    <!-- Card 2 -->
-    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1400&auto=format&fit=crop');">
-      <div class="card-media" aria-hidden="true"></div>
-      <div class="card-badge">Identidade</div>
-      <div class="card-footer">
-        <div>
-          <div class="card-title">BW Soluções</div>
-          <div class="card-meta">Facilities • 2024</div>
-        </div>
-      </div>
-      <a class="card-link" href="cases/bw-solucoes.html" aria-label="Abrir case BW Soluções"></a>
-    </article>
-
-    <!-- Card 3 -->
-    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1400&auto=format&fit=crop');">
-      <div class="card-media" aria-hidden="true"></div>
-      <div class="card-badge">Produto digital</div>
-      <div class="card-footer">
-        <div>
-          <div class="card-title">SMHub</div>
-          <div class="card-meta">Cursos ITSM • 2024</div>
-        </div>
-      </div>
-      <a class="card-link" href="cases/smhub.html" aria-label="Abrir case SMHub"></a>
-    </article>
-
-    <!-- Card 4 -->
-    <article class="card reveal" style="--img:url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1400&auto=format&fit=crop');">
-      <div class="card-media" aria-hidden="true"></div>
-      <div class="card-badge">Rebranding</div>
-      <div class="card-footer">
-        <div>
-          <div class="card-title">BSM</div>
-          <div class="card-meta">Saúde • 2025</div>
-        </div>
-      </div>
-      <a class="card-link" href="cases/bsm.html" aria-label="Abrir case BSM"></a>
-    </article>
-  </div>
-
-  <!-- OBS: Botão para ver todos os projetos -->
-  <div class="projects-cta">
-    <a class="btn primary" href="projects.html">Mais projetos</a>
-    <!-- OBS: Troque o href por /projects, /portfolio ou outra rota/página sua -->
-  </div>
-</section>
+  </section>
 
   <!-- =========================================
-       METODOLOGIA
-       OBS: Título centralizado. Cada item é <details> com seta que expande.
-       OBS: Número no mesmo tamanho do título (definido no CSS).
+       PROJETOS EM DESTAQUE — 4 ITENS (2x2)
+       Card inteiro é link (.card-link)
+       ========================================= -->
+  <section class="section container" id="portfolio">
+    <h2>Projetos em destaque</h2>
+
+    <!-- OBS: ajuste a proporção visual por --tile-ratio (4/3 fica maior) -->
+    <div class="projects projects--equal-4" style="--tile-ratio: 4/3;">
+      <!-- Card 1 -->
+      <article class="card reveal" style="--img:url('assets/covers/arkana.webp');">
+        <div class="card-media" aria-hidden="true"></div>
+        <div class="card-badge">Branding</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-title">Arkana</div>
+            <div class="card-meta">Consultoria tech • 2025</div>
+          </div>
+        </div>
+        <a class="card-link" href="cases/arkana.html" aria-label="Abrir case Arkana"></a>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card reveal" style="--img:url('assets/covers/bw-solucoes.webp');">
+        <div class="card-media" aria-hidden="true"></div>
+        <div class="card-badge">Identidade</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-title">BW Soluções</div>
+            <div class="card-meta">Facilities • 2024</div>
+          </div>
+        </div>
+        <a class="card-link" href="cases/bw-solucoes.html" aria-label="Abrir case BW Soluções"></a>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card reveal" style="--img:url('assets/covers/smhub.webp');">
+        <div class="card-media" aria-hidden="true"></div>
+        <div class="card-badge">Produto digital</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-title">SMHub</div>
+            <div class="card-meta">Cursos ITSM • 2024</div>
+          </div>
+        </div>
+        <a class="card-link" href="cases/smhub.html" aria-label="Abrir case SMHub"></a>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card reveal" style="--img:url('assets/covers/bsm.webp');">
+        <div class="card-media" aria-hidden="true"></div>
+        <div class="card-badge">Rebranding</div>
+        <div class="card-footer">
+          <div>
+            <div class="card-title">BSM</div>
+            <div class="card-meta">Saúde • 2025</div>
+          </div>
+        </div>
+        <a class="card-link" href="cases/bsm.html" aria-label="Abrir case BSM"></a>
+      </article>
+    </div>
+
+    <div class="projects-cta">
+      <a class="btn primary" href="projects.html">Mais projetos</a>
+    </div>
+  </section>
+
+  <!-- =========================================
+       METODOLOGIA — centralizada e expansível
        ========================================= -->
   <section class="section container" id="metodologia">
     <h2 class="centered">Metodologia</h2>
 
     <div class="steps">
-      <!-- Item 01 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">01</span>
           <h3>Análise</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Imersão, diagnóstico e metas claras para entender contexto e oportunidade.
-        </div>
+        <div class="step-content">Imersão, diagnóstico e metas claras para entender contexto e oportunidade.</div>
       </details>
 
-      <!-- Item 02 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">02</span>
           <h3>Estratégia</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Posicionamento, proposta de valor e diretrizes de marca.
-        </div>
+        <div class="step-content">Posicionamento, proposta de valor e diretrizes de marca.</div>
       </details>
 
-      <!-- Item 03 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">03</span>
           <h3>Direção visual</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Referências, moodboards e sistema de linguagem.
-        </div>
+        <div class="step-content">Referências, moodboards e sistema de linguagem.</div>
       </details>
 
-      <!-- Item 04 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">04</span>
           <h3>Logotipo</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Construção tipográfica e versões de uso.
-        </div>
+        <div class="step-content">Construção tipográfica e versões de uso.</div>
       </details>
 
-      <!-- Item 05 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">05</span>
           <h3>Identidade</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Paleta, tipografia, grid e componentes.
-        </div>
+        <div class="step-content">Paleta, tipografia, grid e componentes.</div>
       </details>
 
-      <!-- Item 06 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">06</span>
           <h3>Apresentação</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Mockups, storytelling e racional.
-        </div>
+        <div class="step-content">Mockups, storytelling e racional.</div>
       </details>
 
-      <!-- Item 07 -->
       <details class="step reveal">
         <summary>
           <span class="step-num">07</span>
           <h3>Entrega</h3>
           <span class="chev" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16">
-              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <div class="step-content">
-          Arquivos finais, guia de uso e suporte.
-        </div>
+        <div class="step-content">Arquivos finais, guia de uso e suporte.</div>
       </details>
     </div>
   </section>
 
   <!-- =========================================
        SOBRE
-       OBS: Troque retrato e bio conforme necessário
        ========================================= -->
   <section class="section container" id="sobre">
     <h2>Sobre</h2>
@@ -284,7 +234,6 @@
 
   <!-- =========================================
        ENTREGÁVEIS
-       OBS: Edite rótulos e textos dos cards
        ========================================= -->
   <section class="section container" id="entregaveis">
     <h2>Entregáveis</h2>
@@ -300,7 +249,6 @@
 
   <!-- =========================================
        CTA FINAL
-       OBS: Ajuste e-mail e rótulos
        ========================================= -->
   <section class="big-cta" id="contato">
     <div class="container">
@@ -328,8 +276,7 @@
   </footer>
 
   <!-- =========================================
-       JS inline (sem arquivo externo)
-       OBS: Mantém ano dinâmico e anima “reveal” no scroll
+       JS inline mínimo (ano + reveal)
        ========================================= -->
   <script>
     // Ano dinâmico
@@ -342,7 +289,6 @@
     (function(){
       var els = document.querySelectorAll('.reveal');
       if (!('IntersectionObserver' in window) || els.length === 0){
-        // Fallback: se não houver IO, mostra tudo
         els.forEach(function(el){ el.classList.add('in'); });
         return;
       }
@@ -358,12 +304,7 @@
     })();
   </script>
 
-  <!-- Fallback sem JS -->
-  <noscript>
-    <style>.reveal{opacity:1;transform:none}</style>
-  </noscript>
+  <!-- (Opcional) Se você já usa um scripts/main.js, carregue aqui -->
+  <!-- <script src="scripts/main.js"></script> -->
 </body>
 </html>
-<script src="scripts/main.js"></script>
-
-
