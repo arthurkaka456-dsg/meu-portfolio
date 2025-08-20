@@ -17,7 +17,7 @@ a{ color:inherit; text-decoration:none; }
 img{ max-width:100%; display:block; }
 .container{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 20px; }
 ::selection{ background:rgba(53,208,134,.25); }
-.nowrap{ white-space:nowrap; }                /* evita quebra entre “design [forma] e estratégia” */
+.nowrap{ white-space:nowrap; }                /* evita quebra da 2ª linha */
 @media (max-width:640px){ .nowrap{ white-space:normal; } } /* libera no mobile */
 
 /* ============== 2) Header ============== */
@@ -35,64 +35,51 @@ nav a{ opacity:.9; } nav a:hover{ opacity:1; }
 .hero-wrap{
   min-height:80vh; display:grid; place-items:center; padding:6vh 0; text-align:center;
 }
-.title{ font-size:clamp(44px, 8.2vw, 96px); font-weight:900; line-height:1.04; margin:16px 0; }
+.title{ font-size:clamp(44px, 8.2vw, 96px); font-weight:900; line-height:1.06; margin:16px 0; }
+.line{ display:inline-block; } /* ajuda o <br> a manter duas linhas firmes */
 .subtitle{ font-size:clamp(16px,2.4vw,22px); color:#cfcfcf; max-width:850px; margin:0 auto; }
 
-/* ===== Forma “borboleta” precisa + SEM reflow =====
-   - container tem largura FIXA do estado alongado
-   - asas são pseudo-elementos que escalam via transform
-   - pequena sobreposição anti-fenda no centro
-   - GPU hint para estabilidade (sem tremedeira)
+/* ===== Borboleta (dois semicírculos) — SEM reflow =====
+   - container com largura FIXA do estado alongado
+   - “asas” como elementos reais (não pseudo) => evita sumir
+   - anima via transform (scaleX) com transform-origin no centro
+   - leve sobreposição (seam) para não abrir fenda no meio
 */
 .butterfly{
-  --h: 1.1em;           /* altura da peça */
-  --stretch: 1.9;       /* quanto alonga no hover */
-  --seam: 0.5px;        /* sobreposição para não aparecer “fenda” ao centro */
+  --h: 1.1em;        /* altura da peça (relativa ao texto) */
+  --stretch: 1.9;    /* quanto alonga no hover */
+  --seam: 0.5px;     /* sobreposição central anti-fenda */
 
-  position:relative; display:inline-block;
+  position:relative;
+  display:inline-block;
   height:var(--h);
-  width:calc(var(--h) * var(--stretch)); /* largura máxima — layout estável */
-  margin:0 .22em; vertical-align:-.08em;
-  contain: paint; /* isola a pintura */
+  width:calc(var(--h) * var(--stretch)); /* largura máxima => layout estável */
+  margin:0 .22em;
+  vertical-align:-.08em;
 }
-.butterfly::before,
-.butterfly::after{
-  content:""; position:absolute; top:0;
-  width:calc(var(--h) / 2); height:var(--h);
+.butterfly .wing{
+  position:absolute; top:0;
+  width:calc(var(--h) / 2);
+  height:var(--h);
   background:var(--accent);
-  backface-visibility:hidden; transform:translateZ(0); /* estabilidade */
-  will-change:transform;
+  backface-visibility:hidden; transform:translateZ(0);
   transition:transform .26s cubic-bezier(.22,.61,.36,1);
+  will-change:transform;
 }
-/* Esquerda: âncora no centro (direita) e semicírculo perfeito */
-.butterfly::before{
+.butterfly .wing.left{
   right:calc(50% - var(--seam));
   transform-origin:right center;
   border-radius:var(--h) 0 0 var(--h);
-  transform:scaleX(1);
+  transform:scaleX(1); /* semicírculo perfeito */
 }
-/* Direita */
-.butterfly::after{
+.butterfly .wing.right{
   left:calc(50% - var(--seam));
   transform-origin:left center;
   border-radius:0 var(--h) var(--h) 0;
   transform:scaleX(1);
 }
-/* Hover: alonga sem mudar a largura do container (sem reflow) */
-.butterfly:hover::before,
-.butterfly:hover::after{ transform:scaleX(var(--stretch)); }
-
-/* Botões/CTA */
-.cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; justify-content:center; }
-.btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:14px 18px; border-radius:999px; border:1px solid #333; font-weight:700;
-  transition: transform .15s ease, background-color .2s ease, color .2s ease;
-}
-.btn.primary{ background:var(--brand); color:var(--brand-ink); }
-.btn.primary:hover{ background:var(--brand-hover); color:var(--brand-ink); transform:translateY(-1px); }
-.btn.ghost{ background:transparent; color:var(--text); }
-.btn.ghost:hover{ border-color:#444; transform:translateY(-1px); }
+/* alonga no hover sem mexer no layout */
+.butterfly:hover .wing{ transform:scaleX(var(--stretch)); }
 
 /* ============== 4) Seções ============== */
 .section{ padding:64px 0; }
@@ -124,12 +111,12 @@ nav a{ opacity:.9; } nav a:hover{ opacity:1; }
 .card-title{ font-weight:800; letter-spacing:.2px; }
 .card-meta{ color:var(--muted); font-size:13px; }
 
-/* Card inteiro clicável */
+/* card inteiro clicável */
 .card{ cursor:pointer; }
 .card .card-link{ position:absolute; inset:0; z-index:3; }
 .card .card-link:focus{ outline:2px solid var(--accent); outline-offset:4px; }
 
-/* 5.1) Grid 2x2 */
+/* grid 2x2 */
 .projects--equal-4{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
 .projects--equal-4 .card{ grid-column:auto; min-height:unset; aspect-ratio:var(--tile-ratio,4/3); }
 
