@@ -7,15 +7,12 @@
   <title>Studio AKD - Portfólio</title>
   <meta name="description" content="Site minimalista para estúdios de branding e design." />
 
-  <!-- OBS: Fonte -->
+  <!-- Fonte -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- OBS: Favicon (opcional) -->
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-
-  <!-- OBS: CSS principal -->
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -40,36 +37,31 @@
   </header>
 
   <!-- =========================================
-       HERO — 80% da tela + “borboleta” entre palavras
+       HERO — 80% da tela + forma “borboleta”
        ========================================= -->
   <section class="hero" id="top">
     <div class="container hero-wrap">
       <h1 class="title hero-title">
         Construímos marcas fortes<br>
-        com design
-        <!-- OBS: forma decorativa (dois semicírculos se encontrando) -->
+        com design&nbsp;
+        <!-- Forma decorativa (dois semicírculos) -->
         <span class="butterfly" aria-hidden="true">
           <span class="wing left"></span>
           <span class="wing right"></span>
         </span>
-        e estratégia
+        &nbsp;e estratégia
       </h1>
       <!-- <p class="subtitle">Unimos pesquisa, direção criativa e execução.</p> -->
-      <!-- <div class="cta">
-        <a class="btn primary" href="#portfolio">Ver portfólio</a>
-        <a class="btn ghost" href="#contato">Falar comigo</a>
-      </div> -->
     </div>
   </section>
 
   <!-- =========================================
        PROJETOS EM DESTAQUE — 4 ITENS (2x2)
-       Card inteiro é link (.card-link)
        ========================================= -->
   <section class="section container" id="portfolio">
     <h2>Projetos em destaque</h2>
 
-    <!-- OBS: ajuste a proporção visual por --tile-ratio (4/3 fica maior) -->
+    <!-- Ajuste a proporção visual por --tile-ratio (4/3 fica maior) -->
     <div class="projects projects--equal-4" style="--tile-ratio: 4/3;">
       <!-- Card 1 -->
       <article class="card reveal" style="--img:url('assets/covers/arkana.webp');">
@@ -275,36 +267,17 @@
     </div>
   </footer>
 
-  <!-- =========================================
-       JS inline mínimo (ano + reveal)
-       ========================================= -->
+  <!-- JS mínimo (ano + reveal) -->
   <script>
-    // Ano dinâmico
+    (function(){ var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear(); })();
     (function(){
-      var y = document.getElementById('year');
-      if (y) y.textContent = new Date().getFullYear();
-    })();
-
-    // Reveal on scroll
-    (function(){
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window) || els.length === 0){
-        els.forEach(function(el){ el.classList.add('in'); });
-        return;
-      }
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if(en.isIntersecting){
-            en.target.classList.add('in');
-            io.unobserve(en.target);
-          }
-        });
-      }, { threshold: .12 });
+      var els=document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver' in window) || els.length===0){ els.forEach(function(el){el.classList.add('in');}); return; }
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+      },{threshold:.12});
       els.forEach(function(el){ io.observe(el); });
     })();
   </script>
-
-  <!-- (Opcional) Se você já usa um scripts/main.js, carregue aqui -->
-  <!-- <script src="scripts/main.js"></script> -->
 </body>
 </html>
