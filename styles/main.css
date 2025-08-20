@@ -1,128 +1,88 @@
-/* =======================================
-   0) Tokens de design
-   ======================================= */
+/* ============== 0) Tokens de design ============== */
 :root{
-  --bg:#0a0a0a;
-  --surface:#111;
-  --text:#f3f3f3;
-  --muted:#9aa0a6;
-  --line:#222;
-
-  --brand:#ffffff;
-  --brand-ink:#000000;
-  --brand-hover:#35D086;
-  --accent:#35D086;
-
-  --radius:18px;
-  --maxw:1200px;
+  --bg:#0a0a0a; --surface:#111; --text:#f3f3f3; --muted:#9aa0a6; --line:#222;
+  --brand:#ffffff; --brand-ink:#000; --brand-hover:#35D086; --accent:#35D086;
+  --radius:18px; --maxw:1200px;
 }
 
-/* =======================================
-   1) Reset e utilitários
-   ======================================= */
+/* ============== 1) Reset / utilitários ============== */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
 body{
-  margin:0;
-  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.5;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.5;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
 a{ color:inherit; text-decoration:none; }
 img{ max-width:100%; display:block; }
 .container{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 20px; }
 ::selection{ background:rgba(53,208,134,.25); }
+.nowrap{ white-space:nowrap; }                /* evita quebra entre “design [forma] e estratégia” */
+@media (max-width:640px){ .nowrap{ white-space:normal; } } /* libera no mobile */
 
-/* =======================================
-   2) Cabeçalho e navegação
-   ======================================= */
-header{
-  position:sticky; top:0; z-index:50;
-  background:rgba(17,17,17,.72);
-  backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--line);
-}
+/* ============== 2) Header ============== */
+header{ position:sticky; top:0; z-index:50; background:rgba(17,17,17,.72); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
 .nav{ display:flex; align-items:center; justify-content:space-between; height:64px; }
 .brand{ display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.2px; }
 .brand-dot{ width:10px; height:10px; border-radius:50%; background:var(--accent); }
 nav ul{ display:flex; gap:18px; list-style:none; margin:0; padding:0; }
-nav a{ opacity:.9; }
-nav a:hover{ opacity:1; }
+nav a{ opacity:.9; } nav a:hover{ opacity:1; }
 
-/* =======================================
-   3) Hero (80% da tela) — centralizada e fonte maior
-   ======================================= */
+/* ============== 3) Hero (80% da tela) ============== */
 .hero{ position:relative; overflow:hidden; }
-.hero::after{
-  content:""; position:absolute; inset:0; z-index:-1;
-  background:linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.9) 60%, rgba(10,10,10,1) 100%);
-}
+.hero::after{ content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.9) 60%, rgba(10,10,10,1) 100%); }
 .hero-wrap{
-  min-height:80vh;              /* ocupa 80% da altura da tela */
-  display:grid;
-  place-items:center;           /* centraliza horizontal + vertical */
-  padding:6vh 0;
-  text-align:center;
+  min-height:80vh; display:grid; place-items:center; padding:6vh 0; text-align:center;
 }
-.title{
-  /* fonte maior para a frase principal */
-  font-size:clamp(40px, 7.6vw, 86px);
-  font-weight:900;
-  line-height:1.04;
-  margin:16px 0;
-}
-.subtitle{ font-size:clamp(16px,2.4vw,22px); color:#cfcfcf; max-width:850px; }
+.title{ font-size:clamp(44px, 8.2vw, 96px); font-weight:900; line-height:1.04; margin:16px 0; }
+.subtitle{ font-size:clamp(16px,2.4vw,22px); color:#cfcfcf; max-width:850px; margin:0 auto; }
 
-/* ===== Forma “borboleta” (dois semicírculos) =====
-   Requisitos:
-   - Semicírculos encostados (base)
-   - Ao hover, alongar mantendo pontas arredondadas
-   - Sem reflow/sem quebra de linha (layout estável)
-   Estratégia:
-   - O espaço ocupado pelo componente é FIXO (largura = largura do estado alongado)
-   - As “asas” escalam com transform (scaleX) usando transform-origin no centro
-   - Assim, a animação não mexe no layout nem muda quebra de linha
+/* ===== Forma “borboleta” precisa + SEM reflow =====
+   - container tem largura FIXA do estado alongado
+   - asas são pseudo-elementos que escalam via transform
+   - pequena sobreposição anti-fenda no centro
+   - GPU hint para estabilidade (sem tremedeira)
 */
 .butterfly{
-  /* Altura e alongamento máximo (pode ajustar) */
-  --h: 1.05em;       /* altura da peça, relativa ao texto */
-  --stretch: 1.8;    /* quanto alonga no hover (1 = sem alongar; 1.8 recomendado) */
+  --h: 1.1em;           /* altura da peça */
+  --stretch: 1.9;       /* quanto alonga no hover */
+  --seam: 0.5px;        /* sobreposição para não aparecer “fenda” ao centro */
 
-  position: relative;
-  display: inline-block;
-  height: var(--h);
-  width: calc(var(--h) * var(--stretch)); /* ocupa a largura do estado alongado (estável) */
-  margin: 0 .22em;   /* espaço entre as palavras */
-  vertical-align: -.08em;
+  position:relative; display:inline-block;
+  height:var(--h);
+  width:calc(var(--h) * var(--stretch)); /* largura máxima — layout estável */
+  margin:0 .22em; vertical-align:-.08em;
+  contain: paint; /* isola a pintura */
 }
-.butterfly .wing{
-  position: absolute;
-  top: 0;
-  width: calc(var(--h) / 2);  /* semicírculo (largura = metade da altura) */
-  height: var(--h);
-  background: var(--accent);
-  will-change: transform;
-  transition: transform .24s cubic-bezier(.22,.61,.36,1);
+.butterfly::before,
+.butterfly::after{
+  content:""; position:absolute; top:0;
+  width:calc(var(--h) / 2); height:var(--h);
+  background:var(--accent);
+  backface-visibility:hidden; transform:translateZ(0); /* estabilidade */
+  will-change:transform;
+  transition:transform .26s cubic-bezier(.22,.61,.36,1);
 }
-/* bordas arredondadas só na ponta externa */
-.butterfly .wing.left{
-  right: 50%;
-  transform-origin: right center;
-  border-radius: var(--h) 0 0 var(--h);
-  transform: scaleX(1); /* base = semicírculo */
+/* Esquerda: âncora no centro (direita) e semicírculo perfeito */
+.butterfly::before{
+  right:calc(50% - var(--seam));
+  transform-origin:right center;
+  border-radius:var(--h) 0 0 var(--h);
+  transform:scaleX(1);
 }
-.butterfly .wing.right{
-  left: 50%;
-  transform-origin: left center;
-  border-radius: 0 var(--h) var(--h) 0;
-  transform: scaleX(1);
+/* Direita */
+.butterfly::after{
+  left:calc(50% - var(--seam));
+  transform-origin:left center;
+  border-radius:0 var(--h) var(--h) 0;
+  transform:scaleX(1);
 }
-/* Hover: alonga sem alterar o layout */
-.butterfly:hover .wing{ transform: scaleX(var(--stretch)); }
+/* Hover: alonga sem mudar a largura do container (sem reflow) */
+.butterfly:hover::before,
+.butterfly:hover::after{ transform:scaleX(var(--stretch)); }
 
+/* Botões/CTA */
 .cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; justify-content:center; }
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -134,15 +94,11 @@ nav a:hover{ opacity:1; }
 .btn.ghost{ background:transparent; color:var(--text); }
 .btn.ghost:hover{ border-color:#444; transform:translateY(-1px); }
 
-/* =======================================
-   4) Seções
-   ======================================= */
+/* ============== 4) Seções ============== */
 .section{ padding:64px 0; }
-.section h2{ font-size:clamp(24px,3.6vw,40px); margin:0 0 20px 0; line-height:1.1; }
+.section h2{ font-size:clamp(24px,3.6vw,40px); margin:0 0 20px; line-height:1.1; }
 
-/* =======================================
-   5) Projetos — base
-   ======================================= */
+/* ============== 5) Projetos (cards) ============== */
 .projects{ display:grid; gap:16px; grid-template-columns:repeat(12,1fr); }
 .card{
   position:relative; overflow:hidden; border-radius:var(--radius);
@@ -163,8 +119,7 @@ nav a:hover{ opacity:1; }
 }
 .card-footer{
   position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px;
-  background:linear-gradient(180deg, transparent, rgba(0,0,0,.5), rgba(0,0,0,.7));
+  padding:14px 16px; background:linear-gradient(180deg, transparent, rgba(0,0,0,.5), rgba(0,0,0,.7));
 }
 .card-title{ font-weight:800; letter-spacing:.2px; }
 .card-meta{ color:var(--muted); font-size:13px; }
@@ -174,117 +129,51 @@ nav a:hover{ opacity:1; }
 .card .card-link{ position:absolute; inset:0; z-index:3; }
 .card .card-link:focus{ outline:2px solid var(--accent); outline-offset:4px; }
 
-/* =======================================
-   5.1) Projetos — 2 colunas x 2 linhas (desktop)
-   ======================================= */
-.projects--equal-4{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:20px;
-}
-.projects--equal-4 .card{
-  grid-column:auto;
-  min-height:unset;
-  aspect-ratio: var(--tile-ratio, 4 / 3);
-}
+/* 5.1) Grid 2x2 */
+.projects--equal-4{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+.projects--equal-4 .card{ grid-column:auto; min-height:unset; aspect-ratio:var(--tile-ratio,4/3); }
 
-/* CTA centralizado abaixo dos cards */
-.projects-cta{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-  margin-top:24px;
-  gap:12px;
-}
+/* CTA abaixo dos cards */
+.projects-cta{ display:flex; justify-content:center; align-items:center; width:100%; margin-top:24px; gap:12px; }
 
-/* =======================================
-   6) Metodologia — centralizada e expansível
-   ======================================= */
-#metodologia h2,
-#metodologia .centered{ text-align:center; }
+/* ============== 6) Metodologia ============== */
+#metodologia h2, #metodologia .centered{ text-align:center; }
 .steps{ display:grid; gap:14px; }
-.step{
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  background:linear-gradient(180deg,#0f0f0f,#0b0b0b);
-  overflow:hidden;
-}
+.step{ border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(180deg,#0f0f0f,#0b0b0b); overflow:hidden; }
 .step summary{
-  list-style:none;
-  display:grid;
-  grid-template-columns:80px 1fr 32px; /* num | título | seta */
-  gap:16px;
-  align-items:center;
-  padding:18px;
-  cursor:pointer;
-  color:#d7d7d7;
+  list-style:none; display:grid; grid-template-columns:80px 1fr 32px; gap:16px; align-items:center;
+  padding:18px; cursor:pointer; color:#d7d7d7;
 }
 .step summary::-webkit-details-marker{ display:none; }
 .step-num{ font-size:20px; font-weight:800; color:#cfe9cf; }
 .step h3{ margin:0; font-size:20px; font-weight:700; color:#e9e9e9; }
-.chev{
-  width:28px; height:28px;
-  display:grid; place-items:center;
-  border:1px solid var(--line);
-  border-radius:999px;
-  opacity:.85;
-  transition: transform .2s ease, opacity .2s ease;
-}
+.chev{ width:28px; height:28px; display:grid; place-items:center; border:1px solid var(--line); border-radius:999px; opacity:.85; transition:transform .2s ease, opacity .2s ease; }
 .step[open] .chev{ transform:rotate(180deg); opacity:1; }
 .step-content{ display:none; padding:0 18px 18px 18px; color:#cfcfcf; }
 .step[open] .step-content{ display:block; }
 
-/* =======================================
-   7) Sobre — foto proporcional e texto ao lado
-   ======================================= */
-.about{
-  display:grid;
-  grid-template-columns: clamp(160px, 24vw, 280px) 1fr; /* foto | texto */
-  gap:24px;
-  align-items:center;
-}
-.avatar{
-  border-radius:20px;
-  overflow:hidden;
-  border:1px solid var(--line);
-  aspect-ratio: 4 / 5;
-  max-height: min(52vh, 420px);
-}
+/* ============== 7) Sobre ============== */
+.about{ display:grid; grid-template-columns:clamp(160px,24vw,280px) 1fr; gap:24px; align-items:center; }
+.avatar{ border-radius:20px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/5; max-height:min(52vh,420px); }
 .avatar img{ width:100%; height:100%; object-fit:cover; }
 .about p{ color:#d7d7d7; }
 
-/* =======================================
-   8) Entregáveis
-   ======================================= */
+/* ============== 8) Entregáveis ============== */
 .deliver{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.tile{
-  padding:18px; border:1px solid var(--line); border-radius:var(--radius);
-  background:linear-gradient(180deg,#0f0f0f,#0b0b0b);
-}
-.tile h4{ margin:0 0 6px; }
-.tile p{ margin:0; color:#cfcfcf; }
+.tile{ padding:18px; border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(180deg,#0f0f0f,#0b0b0b); }
+.tile h4{ margin:0 0 6px; } .tile p{ margin:0; color:#cfcfcf; }
 
-/* =======================================
-   9) CTA final e rodapé
-   ======================================= */
-.big-cta{
-  padding:80px 0;
-  background:radial-gradient(1200px 300px at 50% 0%, rgba(53,208,134,.2), transparent 60%);
-}
+/* ============== 9) CTA final / Rodapé ============== */
+.big-cta{ padding:80px 0; background:radial-gradient(1200px 300px at 50% 0%, rgba(53,208,134,.2), transparent 60%); }
 footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
 .foot{ display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; }
 .foot .links{ display:flex; gap:14px; }
 
-/* =======================================
-   10) Micro interações
-   ======================================= */
-.reveal{ opacity:0; transform:translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+/* ============== 10) Micro interações ============== */
+.reveal{ opacity:0; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease; }
 .reveal.in{ opacity:1; transform:none; }
 
-/* =======================================
-   11) Responsivo
-   ======================================= */
+/* ============== 11) Responsivo ============== */
 @media (max-width:1024px){
   .projects--equal-4{ grid-template-columns: repeat(2, 1fr); }
 }
@@ -294,9 +183,5 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
 @media (max-width:640px){
   .projects--equal-4{ grid-template-columns: 1fr; }
   .about{ grid-template-columns: 1fr; }
-  .avatar{
-    max-width:320px;
-    margin:0 auto 14px;
-    max-height:380px;
-  }
+  .avatar{ max-width:320px; margin:0 auto 14px; max-height:380px; }
 }
