@@ -38,14 +38,18 @@
   <section class="hero" id="top">
     <div class="container hero-wrap">
       <h1 class="title hero-title">
-        Construímos marcas fortes<br>
-        <span class="nowrap">
+        <span class="line">Construímos marcas fortes</span><br>
+        <span class="line nowrap">
           com design
-          <span class="butterfly" aria-hidden="true"></span>
+          <!-- OBS: borboleta (dois semicírculos). O container tem largura fixa
+               do estado alongado; as “asas” esticam via transform (sem reflow). -->
+          <span class="butterfly" aria-hidden="true">
+            <span class="wing left"></span>
+            <span class="wing right"></span>
+          </span>
           e estratégia
         </span>
       </h1>
-      <!-- <p class="subtitle">Unimos pesquisa, direção criativa e execução.</p> -->
     </div>
   </section>
 
