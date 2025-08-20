@@ -8,10 +8,10 @@
   --muted:#9aa0a6;
   --line:#222;
 
-  --brand:#ffffff;      /* botão principal */
-  --brand-ink:#000000;  /* texto do botão principal */
+  --brand:#ffffff;
+  --brand-ink:#000000;
   --brand-hover:#35D086;
-  --accent:#35D086;     /* cor da “borboleta” e detalhes */
+  --accent:#35D086;
 
   --radius:18px;
   --maxw:1200px;
@@ -53,7 +53,7 @@ nav a{ opacity:.9; }
 nav a:hover{ opacity:1; }
 
 /* =======================================
-   3) Hero (80% da tela)
+   3) Hero (80% da tela) — centralizada e fonte maior
    ======================================= */
 .hero{ position:relative; overflow:hidden; }
 .hero::after{
@@ -61,37 +61,69 @@ nav a:hover{ opacity:1; }
   background:linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.9) 60%, rgba(10,10,10,1) 100%);
 }
 .hero-wrap{
-  min-height:80vh;              /* ocupa 80% da tela */
-  display:flex;
-  align-items:center;           /* centraliza verticalmente */
+  min-height:80vh;              /* ocupa 80% da altura da tela */
+  display:grid;
+  place-items:center;           /* centraliza horizontal + vertical */
   padding:6vh 0;
+  text-align:center;
 }
-.eyebrow{ font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
-.title{ font-size:clamp(32px,6vw,72px); font-weight:900; line-height:1.02; margin:16px 0; }
-.title.big{ font-size:clamp(28px,4.6vw,56px); }
-.hero-title{ max-width:22ch; }  /* limita número de caracteres por linha */
+.title{
+  /* fonte maior para a frase principal */
+  font-size:clamp(40px, 7.6vw, 86px);
+  font-weight:900;
+  line-height:1.04;
+  margin:16px 0;
+}
 .subtitle{ font-size:clamp(16px,2.4vw,22px); color:#cfcfcf; max-width:850px; }
 
-/* Forma “borboleta” (dois semicírculos) */
+/* ===== Forma “borboleta” (dois semicírculos) =====
+   Requisitos:
+   - Semicírculos encostados (base)
+   - Ao hover, alongar mantendo pontas arredondadas
+   - Sem reflow/sem quebra de linha (layout estável)
+   Estratégia:
+   - O espaço ocupado pelo componente é FIXO (largura = largura do estado alongado)
+   - As “asas” escalam com transform (scaleX) usando transform-origin no centro
+   - Assim, a animação não mexe no layout nem muda quebra de linha
+*/
 .butterfly{
-  --h: 1.05em;            /* altura da peça; aumenta/diminui pra ajustar tamanho */
-  display:inline-flex;
-  align-items:center;
-  margin:0 .18em;
-  vertical-align:-.1em;
+  /* Altura e alongamento máximo (pode ajustar) */
+  --h: 1.05em;       /* altura da peça, relativa ao texto */
+  --stretch: 1.8;    /* quanto alonga no hover (1 = sem alongar; 1.8 recomendado) */
+
+  position: relative;
+  display: inline-block;
+  height: var(--h);
+  width: calc(var(--h) * var(--stretch)); /* ocupa a largura do estado alongado (estável) */
+  margin: 0 .22em;   /* espaço entre as palavras */
+  vertical-align: -.08em;
 }
 .butterfly .wing{
-  height:var(--h);
-  width:calc(var(--h) / 2);        /* semicírculo perfeito */
-  background:var(--accent);
-  transition:width .22s cubic-bezier(.22,.61,.36,1);
+  position: absolute;
+  top: 0;
+  width: calc(var(--h) / 2);  /* semicírculo (largura = metade da altura) */
+  height: var(--h);
+  background: var(--accent);
+  will-change: transform;
+  transition: transform .24s cubic-bezier(.22,.61,.36,1);
 }
-.butterfly .wing.left{  border-radius:var(--h) 0 0 var(--h); }
-.butterfly .wing.right{ border-radius:0 var(--h) var(--h) 0; }
-/* Hover: alonga mantendo a ponta arredondada */
-.butterfly:hover .wing{ width:calc(var(--h) * 1.7); }
+/* bordas arredondadas só na ponta externa */
+.butterfly .wing.left{
+  right: 50%;
+  transform-origin: right center;
+  border-radius: var(--h) 0 0 var(--h);
+  transform: scaleX(1); /* base = semicírculo */
+}
+.butterfly .wing.right{
+  left: 50%;
+  transform-origin: left center;
+  border-radius: 0 var(--h) var(--h) 0;
+  transform: scaleX(1);
+}
+/* Hover: alonga sem alterar o layout */
+.butterfly:hover .wing{ transform: scaleX(var(--stretch)); }
 
-.cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
+.cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; justify-content:center; }
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:10px;
   padding:14px 18px; border-radius:999px; border:1px solid #333; font-weight:700;
@@ -153,7 +185,7 @@ nav a:hover{ opacity:1; }
 .projects--equal-4 .card{
   grid-column:auto;
   min-height:unset;
-  aspect-ratio: var(--tile-ratio, 4 / 3);  /* controla a “altura” dos cards */
+  aspect-ratio: var(--tile-ratio, 4 / 3);
 }
 
 /* CTA centralizado abaixo dos cards */
