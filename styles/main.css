@@ -1,6 +1,5 @@
 /* =======================================
    0) Tokens de design
-   OBS: Troque as cores aqui que o site inteiro acompanha
    ======================================= */
 :root{
   --bg:#0a0a0a;
@@ -9,10 +8,10 @@
   --muted:#9aa0a6;
   --line:#222;
 
-  --brand:#ffffff;      /* OBS: cor do botão principal */
-  --brand-ink:#000000;  /* OBS: cor do texto no botão principal */
-  --brand-hover:#35D086;/* OBS: hover do botão principal */
-  --accent:#35D086;     /* OBS: pequenos detalhes, pontos, foco */
+  --brand:#ffffff;      /* botão principal */
+  --brand-ink:#000000;  /* texto do botão principal */
+  --brand-hover:#35D086;
+  --accent:#35D086;     /* cor da “borboleta” e detalhes */
 
   --radius:18px;
   --maxw:1200px;
@@ -54,57 +53,54 @@ nav a{ opacity:.9; }
 nav a:hover{ opacity:1; }
 
 /* =======================================
-   HERO — ocupar 80% da tela e centralizar
-   OBS: este bloco sobrepõe o padding padrão
+   3) Hero (80% da tela)
    ======================================= */
+.hero{ position:relative; overflow:hidden; }
+.hero::after{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.9) 60%, rgba(10,10,10,1) 100%);
+}
 .hero-wrap{
-  min-height: 80vh;            /* 80% da altura da tela */
-  display: flex;
-  align-items: center;         /* centraliza verticalmente */
-  padding: 6vh 0;              /* um respiro sutil */
+  min-height:80vh;              /* ocupa 80% da tela */
+  display:flex;
+  align-items:center;           /* centraliza verticalmente */
+  padding:6vh 0;
 }
-.hero-title{
-  /* limite de largura pra não ficar com linhas muito longas */
-  max-width: 22ch;
-}
+.eyebrow{ font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+.title{ font-size:clamp(32px,6vw,72px); font-weight:900; line-height:1.02; margin:16px 0; }
+.title.big{ font-size:clamp(28px,4.6vw,56px); }
+.hero-title{ max-width:22ch; }  /* limita número de caracteres por linha */
+.subtitle{ font-size:clamp(16px,2.4vw,22px); color:#cfcfcf; max-width:850px; }
 
-/* =======================================
-   Forma "borboleta" (dois semicírculos)
-   - estado base: semicírculos encostados
-   - hover: alonga mantendo a ponta arredondada
-   ======================================= */
+/* Forma “borboleta” (dois semicírculos) */
 .butterfly{
-  /* OBS: tamanho da peça relativo ao texto (ajuste --h) */
-  --h: 1.05em;           /* altura da peça */
-  display: inline-flex;
-  align-items: center;
-  margin: 0 .18em;       /* espaço entre as palavras */
-  vertical-align: -.1em; /* alinha melhor com a linha de base do texto */
+  --h: 1.05em;            /* altura da peça; aumenta/diminui pra ajustar tamanho */
+  display:inline-flex;
+  align-items:center;
+  margin:0 .18em;
+  vertical-align:-.1em;
 }
 .butterfly .wing{
-  height: var(--h);
-  width: calc(var(--h) / 2);          /* largura = metade da altura => vira semicírculo */
-  background: var(--accent);          /* sua cor de destaque */
-  transition: width .22s cubic-bezier(.22,.61,.36,1);
+  height:var(--h);
+  width:calc(var(--h) / 2);        /* semicírculo perfeito */
+  background:var(--accent);
+  transition:width .22s cubic-bezier(.22,.61,.36,1);
 }
-/* bordas arredondadas só na ponta externa */
-.butterfly .wing.left  { border-radius: var(--h) 0 0 var(--h); }
-.butterfly .wing.right { border-radius: 0 var(--h) var(--h) 0; }
+.butterfly .wing.left{  border-radius:var(--h) 0 0 var(--h); }
+.butterfly .wing.right{ border-radius:0 var(--h) var(--h) 0; }
+/* Hover: alonga mantendo a ponta arredondada */
+.butterfly:hover .wing{ width:calc(var(--h) * 1.7); }
 
-/* HOVER: alonga, mantendo a ponta arredondada (efeito "D") */
-.butterfly:hover .wing{
-  width: calc(var(--h) * 1.7);        /* alonga; aumente para 2.0 se quiser mais */
+.cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:14px 18px; border-radius:999px; border:1px solid #333; font-weight:700;
+  transition: transform .15s ease, background-color .2s ease, color .2s ease;
 }
-
-/* Motion-safe */
-@media (prefers-reduced-motion: reduce){
-  .butterfly .wing{ transition: none; }
-}
-
-/* Responsivo: em telas pequenas a peça acompanha o texto */
-@media (max-width: 640px){
-  .butterfly{ --h: .95em; }
-}
+.btn.primary{ background:var(--brand); color:var(--brand-ink); }
+.btn.primary:hover{ background:var(--brand-hover); color:var(--brand-ink); transform:translateY(-1px); }
+.btn.ghost{ background:transparent; color:var(--text); }
+.btn.ghost:hover{ border-color:#444; transform:translateY(-1px); }
 
 /* =======================================
    4) Seções
@@ -113,8 +109,7 @@ nav a:hover{ opacity:1; }
 .section h2{ font-size:clamp(24px,3.6vw,40px); margin:0 0 20px 0; line-height:1.1; }
 
 /* =======================================
-   5) Projetos em destaque — base
-   OBS: Cada card usa --img como background.
+   5) Projetos — base
    ======================================= */
 .projects{ display:grid; gap:16px; grid-template-columns:repeat(12,1fr); }
 .card{
@@ -142,25 +137,25 @@ nav a:hover{ opacity:1; }
 .card-title{ font-weight:800; letter-spacing:.2px; }
 .card-meta{ color:var(--muted); font-size:13px; }
 
-/* OBS: Link overlay para tornar o card inteiro clicável */
+/* Card inteiro clicável */
 .card{ cursor:pointer; }
 .card .card-link{ position:absolute; inset:0; z-index:3; }
 .card .card-link:focus{ outline:2px solid var(--accent); outline-offset:4px; }
 
 /* =======================================
-   5.1) Projetos — grid 2x2 (desktop)
-   OBS: Use .projects--equal-4 no container e ajuste a altura com --tile-ratio
+   5.1) Projetos — 2 colunas x 2 linhas (desktop)
    ======================================= */
 .projects--equal-4{
   display:grid;
-  grid-template-columns: repeat(2, 1fr);  /* 2 colunas no desktop */
+  grid-template-columns: repeat(2, 1fr);
   gap:20px;
 }
 .projects--equal-4 .card{
-  grid-column:auto;     /* ignora .span-* antigas */
+  grid-column:auto;
   min-height:unset;
-  aspect-ratio: var(--tile-ratio, 4 / 3);
+  aspect-ratio: var(--tile-ratio, 4 / 3);  /* controla a “altura” dos cards */
 }
+
 /* CTA centralizado abaixo dos cards */
 .projects-cta{
   display:flex;
@@ -169,13 +164,6 @@ nav a:hover{ opacity:1; }
   width:100%;
   margin-top:24px;
   gap:12px;
-}
-/* Responsivo dos projetos */
-@media (max-width:900px){
-  .projects--equal-4{ grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width:640px){
-  .projects--equal-4{ grid-template-columns: 1fr; }
 }
 
 /* =======================================
@@ -188,7 +176,7 @@ nav a:hover{ opacity:1; }
   border:1px solid var(--line);
   border-radius:var(--radius);
   background:linear-gradient(180deg,#0f0f0f,#0b0b0b);
-  overflow:hidden; /* segura a expansão */
+  overflow:hidden;
 }
 .step summary{
   list-style:none;
@@ -198,7 +186,7 @@ nav a:hover{ opacity:1; }
   align-items:center;
   padding:18px;
   cursor:pointer;
-  color:#d7d7d7; /* mais discreto */
+  color:#d7d7d7;
 }
 .step summary::-webkit-details-marker{ display:none; }
 .step-num{ font-size:20px; font-weight:800; color:#cfe9cf; }
@@ -259,23 +247,20 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
 /* =======================================
    10) Micro interações
    ======================================= */
-.reveal{
-  opacity:0;
-  transform:translateY(10px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-.reveal.in{
-  opacity:1;
-  transform:none;
-}
+.reveal{ opacity:0; transform:translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in{ opacity:1; transform:none; }
 
 /* =======================================
    11) Responsivo
    ======================================= */
+@media (max-width:1024px){
+  .projects--equal-4{ grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width:900px){
   .about{ grid-template-columns: clamp(140px, 36vw, 240px) 1fr; gap:20px; }
 }
 @media (max-width:640px){
+  .projects--equal-4{ grid-template-columns: 1fr; }
   .about{ grid-template-columns: 1fr; }
   .avatar{
     max-width:320px;
@@ -283,84 +268,3 @@ footer{ border-top:1px solid var(--line); padding:28px 0; color:#b7b7b7; }
     max-height:380px;
   }
 }
-
-/* =======================================
-   12) Cursor personalizado — bola branca + negativo em imagens
-   OBS: mantenha este bloco NO FINAL do arquivo para prevalecer.
-   ======================================= */
-@media (pointer: fine) {
-  /* OBS: esconde o cursor do sistema no site todo,
-     mas mantém cursor de texto em inputs/textarea */
-  body.custom-cursor { cursor: none; }
-  body.custom-cursor input,
-  body.custom-cursor textarea,
-  body.custom-cursor [contenteditable="true"] { cursor: text; }
-
-  /* OBS: a bolinha que segue o mouse (elemento criado via JS: <div class="akd-cursor">) */
-  .akd-cursor{
-    position: fixed;
-    left: 0; top: 0;
-    width: 38px; height: 38px;          /* OBS: tamanho da bolinha */
-    border: 2px solid #fff;             /* OBS: borda branca */
-    border-radius: 999px;
-    background: transparent;            /* OBS: sem preenchimento por padrão */
-    pointer-events: none;
-    z-index: 99999;
-    transform: translate(-50%, -50%);   /* centraliza no ponteiro */
-    transition:
-      width .2s ease, height .2s ease,
-      border-color .2s ease, opacity .25s ease,
-      background-color .2s ease;
-    will-change: transform, backdrop-filter;
-    opacity: .95;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    mix-blend-mode: normal;
-  }
-
-  /* OBS: oculta quando o ponteiro sai da janela */
-  .akd-cursor.is-hidden { opacity: 0; }
-
-  /* OBS: quando passa por cima de elementos "clicáveis", cresce um pouco */
-  body.custom-cursor .is-link { width: 48px; height: 48px; border-width: 2px; }
-
-  /* OBS: quando estiver sobre imagem, aplica negativo SOMENTE dentro da bolinha */
-  body.custom-cursor.over-img .akd-cursor{
-    backdrop-filter: invert(1) contrast(110%);
-    -webkit-backdrop-filter: invert(1) contrast(110%);
-    background: rgba(255,255,255,.08); /* leve glow pra destacar */
-    mix-blend-mode: normal;
-  }
-
-  /* OBS: sobre campos de texto, esconda a bolinha pra ver o cursor I-beam */
-  body.custom-cursor.over-text .akd-cursor{ opacity: 0; }
-}
-
-/* =======================================
-   Cursor custom — ocultar ponteiro do sistema em tudo
-   ======================================= */
-/* Cursor: "VER" menos bold */
-@media (pointer: fine){
-  .akd-cursor .label{
-    font-weight: 600 !important;  /* antes era 800 */
-    letter-spacing: .04em;        /* um pouco menos espaçado pra combinar */
-  }
-}
-@media (pointer: fine) {
-  /* Oculta o ponteiro do sistema no site todo */
-  body.custom-cursor { cursor: none; }
-
-  /* Mesmo em elementos que normalmente usam pointer */
-  body.custom-cursor a,
-  body.custom-cursor button,
-  body.custom-cursor .btn,
-  body.custom-cursor .card,
-  body.custom-cursor [role="button"] { cursor: none; }
-
-  /* Mantém I-beam onde precisa digitar */
-  body.custom-cursor input,
-  body.custom-cursor textarea,
-  body.custom-cursor [contenteditable="true"] { cursor: text; }
-}
-
-
