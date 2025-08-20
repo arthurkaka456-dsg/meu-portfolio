@@ -54,33 +54,57 @@ nav a{ opacity:.9; }
 nav a:hover{ opacity:1; }
 
 /* =======================================
-   3) Hero
+   HERO — ocupar 80% da tela e centralizar
+   OBS: este bloco sobrepõe o padding padrão
    ======================================= */
-.hero{ position:relative; overflow:hidden; }
-.hero-media{
-  position:absolute; inset:0; z-index:-1; opacity:.22; pointer-events:none;
-  object-fit:cover; filter:grayscale(100%) contrast(110%);
+.hero-wrap{
+  min-height: 80vh;            /* 80% da altura da tela */
+  display: flex;
+  align-items: center;         /* centraliza verticalmente */
+  padding: 6vh 0;              /* um respiro sutil */
 }
-.hero::after{
-  content:""; position:absolute; inset:0; z-index:-1;
-  background:linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.9) 60%, rgba(10,10,10,1) 100%);
+.hero-title{
+  /* limite de largura pra não ficar com linhas muito longas */
+  max-width: 22ch;
 }
-.hero-wrap{ padding:96px 0 40px; }
-.eyebrow{ font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
-.title{ font-size:clamp(32px,6vw,72px); font-weight:900; line-height:1.02; margin:16px 0; }
-.title.big{ font-size:clamp(28px,4.6vw,56px); }
-.subtitle{ font-size:clamp(16px,2.4vw,22px); color:#cfcfcf; max-width:850px; }
 
-.cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
-.btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:14px 18px; border-radius:999px; border:1px solid #333; font-weight:700;
-  transition: transform .15s ease, background-color .2s ease, color .2s ease;
+/* =======================================
+   Forma "borboleta" (dois semicírculos)
+   - estado base: semicírculos encostados
+   - hover: alonga mantendo a ponta arredondada
+   ======================================= */
+.butterfly{
+  /* OBS: tamanho da peça relativo ao texto (ajuste --h) */
+  --h: 1.05em;           /* altura da peça */
+  display: inline-flex;
+  align-items: center;
+  margin: 0 .18em;       /* espaço entre as palavras */
+  vertical-align: -.1em; /* alinha melhor com a linha de base do texto */
 }
-.btn.primary{ background:var(--brand); color:var(--brand-ink); }
-.btn.primary:hover{ background:var(--brand-hover); color:var(--brand-ink); transform:translateY(-1px); }
-.btn.ghost{ background:transparent; color:var(--text); }
-.btn.ghost:hover{ border-color:#444; transform:translateY(-1px); }
+.butterfly .wing{
+  height: var(--h);
+  width: calc(var(--h) / 2);          /* largura = metade da altura => vira semicírculo */
+  background: var(--accent);          /* sua cor de destaque */
+  transition: width .22s cubic-bezier(.22,.61,.36,1);
+}
+/* bordas arredondadas só na ponta externa */
+.butterfly .wing.left  { border-radius: var(--h) 0 0 var(--h); }
+.butterfly .wing.right { border-radius: 0 var(--h) var(--h) 0; }
+
+/* HOVER: alonga, mantendo a ponta arredondada (efeito "D") */
+.butterfly:hover .wing{
+  width: calc(var(--h) * 1.7);        /* alonga; aumente para 2.0 se quiser mais */
+}
+
+/* Motion-safe */
+@media (prefers-reduced-motion: reduce){
+  .butterfly .wing{ transition: none; }
+}
+
+/* Responsivo: em telas pequenas a peça acompanha o texto */
+@media (max-width: 640px){
+  .butterfly{ --h: .95em; }
+}
 
 /* =======================================
    4) Seções
